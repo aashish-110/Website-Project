@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_profile.css') }}">
+<style>
+    /* Enhanced Password Section */
+    .password-section {
+        margin: 40px 0 30px;
+        padding: 25px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .password-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(to bottom, #667eea, #764ba2);
+    }
+    
+    .password-section h3 {
+        margin-top: 0;
+        color: #2d3748;
+        font-size: 1.3rem;
+        font-weight: 600;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .password-section h3::before {
+        content: '🔒';
+        font-size: 1.2rem;
+    }
+    
+    .password-note {
+        color: #718096;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        padding: 12px 15px;
+        background: white;
+        border-radius: 8px;
+        border-left: 3px solid #4299e1;
+        margin: 20px 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .password-note::before {
+        content: '💡';
+        font-size: 1rem;
+    }
+    
+    /* Enhanced Form Fields in Password Section */
+    .password-section input {
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+        background: white;
+        padding: 12px 15px;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+    
+    .password-section input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+        background: #f8fafc;
+    }
+    
+    .password-section label {
+        font-weight: 600;
+        color: #4a5568;
+        margin-top: 15px;
+        display: block;
+        font-size: 14px;
+    }
+    
+    /* Enhanced Cancel Button */
+    .cancel-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: white;
+        color: #718096;
+        text-decoration: none;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        margin-left: 15px;
+        text-align: center;
+        min-width: 120px;
+    }
+    
+    .cancel-btn:hover {
+        background: #f8f9fa;
+        border-color: #cbd5e0;
+        color: #4a5568;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cancel-btn:active {
+        transform: translateY(0);
+    }
+    
+    /* Button Container */
+    .button-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+    
+    /* Submit Button Enhancement */
+    form button[type="submit"] {
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 150px;
+    }
+    
+    form button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    form button[type="submit"]:active {
+        transform: translateY(0);
+    }
+    
+    /* Error State Enhancement */
+    .error-border {
+        border-color: #fc8181 !important;
+        box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.2) !important;
+        animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .button-container {
+            flex-direction: column;
+        }
+        
+        .cancel-btn, form button[type="submit"] {
+            width: 100%;
+            margin-left: 0;
+        }
+        
+        .cancel-btn {
+            margin-top: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-profile-container">
+    <h2>Edit Profile</h2>
+    
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <!-- Full Name -->
+        <label for="fullname">Full Name</label>
+        <input type="text" 
+            id="fullname" 
+            name="fullname"
+            value="{% if profile and profile.fullname %}{{ profile.fullname }}{% else %}{{ username }}{% endif %}" 
+            required
+            placeholder="Enter your full name"
+            autocomplete="off">
+
+        <!-- Profile Photo Upload -->
+        <label for="profile_picture">Profile Photo</label>
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+
+        <!-- Show current profile picture if exists, otherwise default -->
+        <div class="current-photo">
+            {% if profile and profile.profile_picture %}
+                <p>Current Photo:</p>
+                <img src="{{ url_for('static', filename=profile.profile_picture) }}" 
+                     alt="Profile Picture" 
+                     class="profile-pic">
+            {% else %}
+                <p>Default Photo:</p>
+                <img src="{{ url_for('static', filename='images/default.jpg') }}" 
+                     alt="Default Profile Picture" 
+                     class="profile-pic">
+            {% endif %}
+        </div>
+
+        <!-- Password Change Section -->
+        <div class="password-section">
+            <h3>Change Password</h3>
+            
+            <!-- Current Password -->
+            <label for="current_password">Current Password</label>
+            <input type="password" id="current_password" name="current_password"
+                   placeholder="Enter current password to change password">
+
+            <!-- New Password -->
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password"
+                   placeholder="Enter new password (min 6 characters)">
+
+            <!-- Confirm New Password -->
+            <label for="confirm_password">Confirm New Password</label>
+            <input type="password" id="confirm_password" name="confirm_password"
+                   placeholder="Confirm new password">
+            
+            <span class="password-note">
+                Note: Leave password fields blank if you don't want to change your password.
+            </span>
+        </div>
+
+        <!-- Button Container -->
+        <div class="button-container">
+            <!-- Submit button -->
+            <button type="submit">Update Profile</button>
+            
+            <!-- Cancel/Back button -->
+            <a href="{{ url_for('user_dashboard' if session.role == 'user' else 'admin_dashboard') }}" 
+               class="cancel-btn">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const newPassword = document.getElementById('new_password');
+    const confirmPassword = document.getElementById('confirm_password');
+    const currentPassword = document.getElementById('current_password');
+    
+    // Clear error borders on input
+    [currentPassword, newPassword, confirmPassword].forEach(input => {
+        input.addEventListener('input', function() {
+            this.classList.remove('error-border');
+        });
+    });
+    
+    form.addEventListener('submit', function(e) {
+        // Clear previous error styles
+        document.querySelectorAll('.error-border').forEach(el => {
+            el.classList.remove('error-border');
+        });
+        
+        // Only validate if current password is provided
+        if (currentPassword.value.trim() !== '') {
+            let isValid = true;
+            
+            // Check if new password is provided
+            if (!newPassword.value.trim()) {
+                newPassword.classList.add('error-border');
+                alert('Please enter a new password');
+                isValid = false;
+            }
+            
+            // Check password match
+            if (newPassword.value !== confirmPassword.value) {
+                confirmPassword.classList.add('error-border');
+                alert('New passwords do not match!');
+                isValid = false;
+            }
+            
+            // Check password strength
+            if (newPassword.value.trim() && newPassword.value.length < 6) {
+                newPassword.classList.add('error-border');
+                alert('Password should be at least 6 characters long');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+        }
+        
+        // If current password is empty but new password is filled
+        if (currentPassword.value.trim() === '' && 
+            (newPassword.value.trim() !== '' || confirmPassword.value.trim() !== '')) {
+            alert('Please enter your current password to change your password');
+            currentPassword.classList.add('error-border');
+            e.preventDefault();
+            return;
+        }
+    });
+});
+</script>
+{% endblock %}

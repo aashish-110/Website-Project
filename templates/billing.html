@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+
+{% block title %}Billing | World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/billing.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="billing-container">
+    <div class="billing-box">
+        <h2> Final Billing
+            <span class="currency-badge" id="currencyBadge"></span>
+        </h2>
+
+        <div class="billing-info">
+            <p><strong>Full Name:</strong> {{ fullname }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Hotel:</strong> {{ hotel_name }}</p>
+            <p><strong>Room:</strong> {{ room_name }}</p>
+            <p><strong>Check-in:</strong> {{ checkin }}</p>
+            <p><strong>Check-out:</strong> {{ checkout }}</p>
+            <p><strong>Guests:</strong> {{ guests }}</p>
+            <p><strong>Nights:</strong> {{ num_days }}</p>
+            <p><strong>Price per Night:</strong> <span id="pricePerNight"></span></p>
+            <p><strong>Early Booking Discount:</strong> <span id="discount">0%</span></p>
+            <p><strong>Total Price:</strong> <span id="total"></span></p>
+        </div>
+
+        <form method="POST" action="{{ url_for('finalize_booking') }}" id="finalBookingForm">
+            <input type="hidden" name="room_id" value="{{ room_id }}">
+            <input type="hidden" name="checkin" value="{{ checkin }}">
+            <input type="hidden" name="checkout" value="{{ checkout }}">
+            <input type="hidden" name="fullname" value="{{ fullname }}">
+            <input type="hidden" name="guests" value="{{ guests }}">
+            <input type="hidden" name="email" value="{{ email }}">
+            <input type="hidden" name="hotel_name" value="{{ hotel_name }}">
+            <input type="hidden" name="room_name" value="{{ room_name }}">
+            <input type="hidden" name="price" value="{{ price }}">
+            <input type="hidden" name="currency" value="{{ currency }}">
+            
+            <button type="button" class="confirm-btn" onclick="openPayPalPopup()">
+                Pay Here
+            </button>
+        </form>
+
+        <!-- PayPal Style Modal -->
+        <div id="paypalPopup" class="pp-overlay">
+            <div class="pp-container">
+
+                <!-- LEFT -->
+                <div class="pp-left">
+                    <div class="pp-header">
+                        <span class="pp-logo">
+                            <b>Pay</b><span>Pal</span>
+                        </span>
+                    </div>
+
+                    <p class="pp-title">Pay with PayPal</p>
+
+                    <div class="pp-user">
+                        <div class="pp-avatar">👤</div>
+                        <div>
+                            <strong>{{ fullname }}</strong>
+                            <small>{{ email }}</small>
+                        </div>
+                    </div>
+
+                    <div class="pp-method">
+                        <p>Payment Method</p>
+                        <div class="pp-card">
+                            <span>💳</span>
+                            <span>PayPal Balance / Card</span>
+                        </div>
+                    </div>
+
+                    <button class="pp-pay-btn" onclick="confirmFakePayment()">
+                        Pay <span id="ppAmount"></span>
+                    </button>
+
+                    <button class="pp-cancel" onclick="closePayPalPopup()">
+                        Cancel
+                    </button>
+                </div>
+
+                <!-- RIGHT -->
+                <div class="pp-right">
+                    <h4>Order Summary</h4>
+
+                    <div class="pp-summary">
+                        <div>
+                            <span>Hotel</span>
+                            <span>{{ hotel_name }}</span>
+                        </div>
+                        <div>
+                            <span>Room</span>
+                            <span>{{ room_name }}</span>
+                        </div>
+                        <div>
+                            <span>Nights</span>
+                            <span>{{ num_days }}</span>
+                        </div>
+                        <div>
+                            <span>Guests</span>
+                            <span>{{ guests }}</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="pp-total">
+                            <span>Total</span>
+                            <strong><span id="ppAmountSide"></span></strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="success-overlay">
+            <div class="success-container">
+                <div class="success-icon">✅</div>
+                <h2>Booking Confirmed!</h2>
+                <p>Your payment has been processed successfully.</p>
+                <p class="success-email">A confirmation email has been sent to:<br><strong>{{ email }}</strong></p>
+                <div class="success-details">
+                    <p><strong>Booking Details:</strong></p>
+                    <p>Hotel: {{ hotel_name }}</p>
+                    <p>Room: {{ room_name }}</p>
+                    <p>Check-in: {{ checkin }}</p>
+                    <p>Check-out: {{ checkout }}</p>
+                    <p>Total Paid: <span id="successTotal"></span></p>
+                </div>
+                <button class="success-btn" onclick="redirectToDashboard()">
+                    Go to Dashboard
+                </button>
+                <button class="download-receipt-btn" onclick="downloadReceipt()">
+                    📥 Download Receipt
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const CURRENCY_SYMBOLS = {
+        GBP: '£',
+        USD: '$',
+        NPR: '₨',
+        AUD: '$',
+        INR: '₹'
+    };
+    
+    const CURRENCY_NAMES = {
+        GBP: 'British Pound',
+        USD: 'US Dollar',
+        NPR: 'Nepali Rupee',
+        AUD: 'Australian Dollar',
+        INR: 'Indian Rupee'
+    };
+    
+    // Exchange rates from GBP
+    const EXCHANGE_RATES = {
+        USD: 1.27,
+        NPR: 171.50,
+        AUD: 1.93,
+        INR: 106.50
+    };
+    
+    /* ========================================
+       GET VALUES FROM URL/TEMPLATE
+       ======================================== */
+    
+    const selectedCurrency = "{{ currency if currency else 'GBP' }}";
+    const priceFromConfirm = parseFloat("{{ price }}");
+    const numDays = parseInt("{{ num_days }}");
+    const checkin = new Date("{{ checkin }}");
+    const today = new Date();
+    
+    /* ========================================
+       CALCULATE DISCOUNT
+       ======================================== */
+    
+    const diffTime = checkin - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    let discount = 0;
+    if (diffDays >= 80 && diffDays <= 90) {
+        discount = 30;
+    } else if (diffDays >= 60 && diffDays <= 79) {
+        discount = 20;
+    } else if (diffDays >= 45 && diffDays <= 59) {
+        discount = 10;
+    }
+    
+    /* ========================================
+       CALCULATE FINAL PRICE
+       ======================================== */
+    
+    // The price already comes from confirm page in selected currency
+    const pricePerNight = priceFromConfirm;
+    const totalPrice = pricePerNight * numDays;
+    
+    /* ========================================
+       FORMAT CURRENCY
+       ======================================== */
+    
+    function formatCurrency(amount) {
+        const symbol = CURRENCY_SYMBOLS[selectedCurrency];
+        return `${symbol}${amount.toFixed(2)}`;
+    }
+    
+    /* ========================================
+       UPDATE PAGE DISPLAY
+       ======================================== */
+    
+    // Update currency badge
+    document.getElementById("currencyBadge").textContent = `${CURRENCY_SYMBOLS[selectedCurrency]} ${selectedCurrency}`;
+    
+    // Update discount
+    document.getElementById("discount").textContent = discount + "%";
+    
+    // Update price per night
+    document.getElementById("pricePerNight").textContent = formatCurrency(pricePerNight);
+    
+    // Update total price
+    document.getElementById("total").textContent = formatCurrency(totalPrice);
+    
+    // Update hidden form field with discounted price per night
+    document.querySelector('input[name="price"]').value = pricePerNight.toFixed(2);
+    
+    /* ========================================
+       PAYPAL MODAL FUNCTIONS
+       ======================================== */
+    
+    let paymentInProgress = false;
+    let isFormSubmitting = false;  // NEW FLAG
+    
+    function openPayPalPopup() {
+        paymentInProgress = true;
+        const formattedTotal = formatCurrency(totalPrice);
+        document.getElementById("ppAmount").textContent = formattedTotal;
+        document.getElementById("ppAmountSide").textContent = formattedTotal;
+        document.getElementById("paypalPopup").style.display = "flex";
+        
+        // Lock body scroll when modal opens
+        document.body.classList.add('modal-open');
+    }
+    
+    function closePayPalPopup() {
+        paymentInProgress = false;
+        document.getElementById("paypalPopup").style.display = "none";
+        
+        // Unlock body scroll when modal closes
+        document.body.classList.remove('modal-open');
+    }
+    
+    function confirmFakePayment() {
+        // Close PayPal modal (but keep body locked)
+        document.getElementById("paypalPopup").style.display = "none";
+        paymentInProgress = false;
+        
+        // Show loading/processing for 1 second
+        const payBtn = document.querySelector('.pp-pay-btn');
+        const originalText = payBtn.innerHTML;
+        payBtn.innerHTML = 'Processing...';
+        payBtn.disabled = true;
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            // Update success modal with final amount
+            document.getElementById("successTotal").textContent = formatCurrency(totalPrice);
+            
+            // CRITICAL: Set flag BEFORE submitting to allow form submission
+            isFormSubmitting = true;
+            
+            // Submit the form
+            document.getElementById("finalBookingForm").submit();
+            
+            // Show success modal immediately after submission
+            document.getElementById("successModal").style.display = "flex";
+            // Keep body scroll locked for success modal
+            document.body.classList.add('modal-open');
+        }, 1000);
+    }
+    
+    function redirectToDashboard() {
+        // Allow navigation when redirecting to dashboard
+        paymentInProgress = false;
+        isFormSubmitting = true;
+        
+        // Unlock body scroll before navigating
+        document.body.classList.remove('modal-open');
+        
+        const userRole = "{{ session.get('role', 'user') }}";
+        if (userRole === 'admin') {
+            window.location.href = "{{ url_for('admin_dashboard') }}";
+        } else {
+            window.location.href = "{{ url_for('user_dashboard') }}";
+        }
+    }
+    
+    /* ========================================
+       DOWNLOAD RECEIPT FUNCTION
+       ======================================== */
+    
+    function downloadReceipt() {
+        // Create receipt data
+        const receiptData = {
+            fullname: "{{ fullname }}",
+            email: "{{ email }}",
+            hotel_name: "{{ hotel_name }}",
+            room_name: "{{ room_name }}",
+            checkin: "{{ checkin }}",
+            checkout: "{{ checkout }}",
+            guests: "{{ guests }}",
+            num_days: numDays,
+            price_per_night: pricePerNight,
+            discount: discount,
+            total: totalPrice,
+            currency: selectedCurrency,
+            currency_symbol: CURRENCY_SYMBOLS[selectedCurrency],
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString(),
+            receipt_number: 'RCP-' + Date.now()
+        };
+        
+        // Generate receipt as HTML and convert to downloadable format
+        const receiptHTML = generateReceiptHTML(receiptData);
+        
+        // Create a temporary link and download
+        const blob = new Blob([receiptHTML], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Hotel_Receipt_${receiptData.receipt_number}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    function generateReceiptHTML(data) {
+        const subtotal = data.price_per_night * data.num_days;
+        const discountAmount = (subtotal * data.discount) / 100;
+        
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking Receipt - ${data.receipt_number}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 40px; 
+            background: #f5f5f5;
+            color: #333;
+        }
+        .receipt-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 50px; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .header { 
+            text-align: center; 
+            border-bottom: 3px solid #667eea; 
+            padding-bottom: 30px; 
+            margin-bottom: 40px;
+        }
+        .header h1 { 
+            color: #667eea; 
+            font-size: 2.5em; 
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .header p { 
+            color: #666; 
+            font-size: 1.1em;
+        }
+        .receipt-info { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .info-group { }
+        .info-group label { 
+            display: block; 
+            color: #888; 
+            font-size: 0.85em; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .info-group p { 
+            font-size: 1.1em; 
+            font-weight: 600;
+            color: #333;
+        }
+        .booking-details { 
+            margin: 40px 0;
+        }
+        .booking-details h2 { 
+            color: #667eea; 
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .detail-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #efefef;
+        }
+        .detail-row:last-child { 
+            border-bottom: none; 
+        }
+        .detail-row label { 
+            color: #666;
+            font-size: 1em;
+        }
+        .detail-row span { 
+            font-weight: 600;
+            color: #333;
+        }
+        .pricing { 
+            margin-top: 40px; 
+            padding: 30px; 
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border-radius: 8px;
+            border: 2px solid #9ae6b4;
+        }
+        .price-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 12px 0;
+            font-size: 1.1em;
+        }
+        .price-row.discount { 
+            color: #10b981;
+            font-weight: 600;
+        }
+        .price-row.total { 
+            border-top: 3px solid #9ae6b4; 
+            margin-top: 15px; 
+            padding-top: 20px;
+            font-size: 1.4em; 
+            font-weight: 700;
+            color: #667eea;
+        }
+        .footer { 
+            margin-top: 50px; 
+            padding-top: 30px; 
+            border-top: 2px solid #e0e0e0; 
+            text-align: center; 
+            color: #999;
+        }
+        .footer p { 
+            margin: 10px 0;
+        }
+        .payment-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        @media print {
+            body { padding: 0; background: white; }
+            .receipt-container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="header">
+            <h1>🏨 Payment Receipt</h1>
+            <p>Hotel Booking Confirmation</p>
+            <div class="payment-badge">✓ PAID</div>
+        </div>
+        
+        <div class="receipt-info">
+            <div class="info-group">
+                <label>Receipt Number</label>
+                <p>${data.receipt_number}</p>
+            </div>
+            <div class="info-group">
+                <label>Date Issued</label>
+                <p>${data.date} ${data.time}</p>
+            </div>
+            <div class="info-group">
+                <label>Guest Name</label>
+                <p>${data.fullname}</p>
+            </div>
+            <div class="info-group">
+                <label>Email</label>
+                <p>${data.email}</p>
+            </div>
+        </div>
+        
+        <div class="booking-details">
+            <h2>Booking Details</h2>
+            <div class="detail-row">
+                <label>Hotel</label>
+                <span>${data.hotel_name}</span>
+            </div>
+            <div class="detail-row">
+                <label>Room Type</label>
+                <span>${data.room_name}</span>
+            </div>
+            <div class="detail-row">
+                <label>Check-in Date</label>
+                <span>${data.checkin}</span>
+            </div>
+            <div class="detail-row">
+                <label>Check-out Date</label>
+                <span>${data.checkout}</span>
+            </div>
+            <div class="detail-row">
+                <label>Number of Nights</label>
+                <span>${data.num_days}</span>
+            </div>
+            <div class="detail-row">
+                <label>Number of Guests</label>
+                <span>${data.guests}</span>
+            </div>
+        </div>
+        
+        <div class="pricing">
+            <div class="price-row">
+                <span>Price per Night</span>
+                <span>${data.currency_symbol}${data.price_per_night.toFixed(2)}</span>
+            </div>
+            <div class="price-row">
+                <span>Number of Nights</span>
+                <span>× ${data.num_days}</span>
+            </div>
+            <div class="price-row">
+                <span>Subtotal</span>
+                <span>${data.currency_symbol}${subtotal.toFixed(2)}</span>
+            </div>
+            ${data.discount > 0 ? `
+            <div class="price-row discount">
+                <span>Early Booking Discount (${data.discount}%)</span>
+                <span>-${data.currency_symbol}${discountAmount.toFixed(2)}</span>
+            </div>
+            ` : ''}
+            <div class="price-row total">
+                <span>Total Amount Paid</span>
+                <span>${data.currency_symbol}${data.total.toFixed(2)} ${data.currency}</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Thank you for choosing our hotel!</strong></p>
+            <p>This is an electronic receipt for your booking.</p>
+            <p>For any inquiries, please contact us at thakuraashik27@gmail.com</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">Generated on ${data.date} at ${data.time}</p>
+        </div>
+    </div>
+</body>
+</html>`;
+    }
+    
+    // Only show warning when payment modal is open (not during form submission)
+    window.addEventListener('beforeunload', function (e) {
+        // Don't show warning if form is being submitted
+        if (paymentInProgress && !isFormSubmitting) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+</script>
+{% endblock %}

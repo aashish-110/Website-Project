@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Monthly Sales Report{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/monthly_report.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <a href="{{ url_for('admin_dashboard') }}" class="back-button">← Back to Dashboard</a>
+    <button onclick="window.print()" class="print-button">🖨️ Print Report</button>
+    
+    <div class="report-header">
+        <h1>📅 Monthly Sales Report</h1>
+        {% if monthly_summary %}
+        <p>{{ monthly_summary.month_name }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Month Selector -->
+    <div class="month-selector">
+        <form method="GET" action="{{ url_for('monthly_report') }}">
+            <label for="month"><strong>Select Month:</strong></label>
+            <select name="month" id="month" required>
+                <option value="">-- Month --</option>
+                <option value="1" {% if selected_month == '1' %}selected{% endif %}>January</option>
+                <option value="2" {% if selected_month == '2' %}selected{% endif %}>February</option>
+                <option value="3" {% if selected_month == '3' %}selected{% endif %}>March</option>
+                <option value="4" {% if selected_month == '4' %}selected{% endif %}>April</option>
+                <option value="5" {% if selected_month == '5' %}selected{% endif %}>May</option>
+                <option value="6" {% if selected_month == '6' %}selected{% endif %}>June</option>
+                <option value="7" {% if selected_month == '7' %}selected{% endif %}>July</option>
+                <option value="8" {% if selected_month == '8' %}selected{% endif %}>August</option>
+                <option value="9" {% if selected_month == '9' %}selected{% endif %}>September</option>
+                <option value="10" {% if selected_month == '10' %}selected{% endif %}>October</option>
+                <option value="11" {% if selected_month == '11' %}selected{% endif %}>November</option>
+                <option value="12" {% if selected_month == '12' %}selected{% endif %}>December</option>
+            </select>
+
+            <label for="year"><strong>Year:</strong></label>
+            <select name="year" id="year" required>
+                <option value="">-- Year --</option>
+                {% for year in range(2020, 2027) %}
+                <option value="{{ year }}" {% if selected_year == year|string %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">View Report</button>
+        </form>
+
+        {% if available_months %}
+        <div class="available-months">
+            <strong>Available months:</strong>
+            <div>
+                {% for month in available_months[:6] %}
+                    <a href="{{ url_for('monthly_report', month=month.month, year=month.year) }}" 
+                       class="month-link">
+                        {{ month.month_name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if monthly_summary %}
+        <div class="summary-stats">
+            <div class="stat-box">
+                <h3>Total Bookings</h3>
+                <div class="value">{{ monthly_summary.total_bookings }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Revenue</h3>
+                <div class="value">£{{ "%.2f"|format(monthly_summary.total_revenue) }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Average Booking Value</h3>
+                <div class="value">£{{ "%.2f"|format(monthly_summary.avg_booking_value) }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Highest Booking</h3>
+                <div class="value">£{{ "%.2f"|format(monthly_summary.max_booking_value) }}</div>
+            </div>
+        </div>
+
+        <!-- Hotel Breakdown -->
+        {% if hotel_breakdown %}
+        <h3 class="section-heading">📊 Sales by Hotel</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hotel Name</th>
+                    <th>Location</th>
+                    <th>Total Bookings</th>
+                    <th>Revenue</th>
+                    <th>% of Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hotel in hotel_breakdown %}
+                <tr>
+                    <td data-label="Hotel Name">{{ hotel.hotel_name }}</td>
+                    <td data-label="Location">{{ hotel.location }}</td>
+                    <td data-label="Total Bookings">{{ hotel.bookings }}</td>
+                    <td data-label="Revenue">£{{ "%.2f"|format(hotel.revenue) }}</td>
+                    <td data-label="% of Total">{{ "%.1f"|format((hotel.revenue / monthly_summary.total_revenue * 100) if monthly_summary.total_revenue > 0 else 0) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- Daily Breakdown -->
+        {% if daily_data %}
+        <h3 class="section-heading">📈 Daily Breakdown</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Bookings</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in daily_data %}
+                <tr>
+                    <td data-label="Date">{{ day.booking_day.strftime('%Y-%m-%d') }}</td>
+                    <td data-label="Bookings">{{ day.daily_bookings }}</td>
+                    <td data-label="Revenue">£{{ "%.2f"|format(day.daily_revenue) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <p>No sales data available for {{ selected_month }}/{{ selected_year }}.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

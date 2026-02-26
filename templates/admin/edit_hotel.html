@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_hotel.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <div class="form-container">
+        <h2>Edit Hotel</h2>
+
+        <form method="POST" class="hotel-form">
+            <div class="form-group">
+                <label>Hotel Name:</label>
+                <input type="text" name="hotel_name" value="{{ hotel.hotel_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Location:</label>
+                <input type="text" name="location" value="{{ hotel.location }}" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-update">Update Hotel</button>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

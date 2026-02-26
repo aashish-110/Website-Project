@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}World Hotel | Find Your Perfect Stay{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+    <div class="hero-background">
+        <img src="/static/images/image.jpg" alt="Luxury Hotel Resort">
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+        <h1>Find Your Perfect Stay</h1>
+        <p>Luxury rooms, premium services, and unforgettable experiences.</p>
+    </div>
+</section>
+
+<!-- ================= SEARCH SECTION (DESTINATION ONLY) ================= -->
+<section class="search-section">
+    <div class="container">
+
+        <form class="search-form search-form-single" action="{{ url_for('search') }}" method="GET">
+
+            <div class="search-single-field" onclick="this.querySelector('input').focus()">
+                <i data-lucide="map-pin" class="field-icon"></i>
+                <div class="field-content">
+                    <label>Destination</label>
+                    <input type="text" name="city"
+                        placeholder="Search city (London, Manchester...)"
+                        required>
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn-search btn-search-wide">
+                <i data-lucide="search"></i>
+                Search Hotels
+            </button>
+
+        </form>
+
+    </div>
+</section>
+
+<!-- ================= FEATURED DESTINATIONS ================= -->
+<section class="featured-destinations">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>Popular Destinations</h2>
+            <p>Explore our top locations for an unforgettable stay</p>
+        </div>
+
+        <div class="destinations-grid">
+
+            <div class="destination-card">
+                <div class="destination-circle">
+                    <a href="{{ url_for('location', city='london') }}">
+                        <img src="{{ url_for('static', filename='images/london.jpg') }}" alt="London">
+                    </a>
+                </div>
+                <h3>London</h3>
+            </div>
+
+            <div class="destination-card">
+                <div class="destination-circle">
+                    <a href="{{ url_for('location', city='manchester') }}">
+                        <img src="{{ url_for('static', filename='images/manchester.jpg') }}" alt="Manchester">
+                    </a>
+                </div>
+                <h3>Manchester</h3>
+            </div>
+
+            <div class="destination-card">
+                <div class="destination-circle">
+                    <a href="{{ url_for('location', city='newcastle') }}">
+                        <img src="{{ url_for('static', filename='images/newcastle.jpg') }}" alt="Newcastle">
+                    </a>
+                </div>
+                <h3>Newcastle</h3>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="features">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>Why Choose World Hotel?</h2>
+            <p>We make hotel booking easy, secure, and rewarding</p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/static/images/best.jpg" alt="Best Price">
+                </div>
+                <h3>Best Price Guarantee</h3>
+                <p>Find the best deals with our price match guarantee</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/static/images/BOOK.png" alt="Secure Booking">
+                </div>
+                <h3>Secure Booking</h3>
+                <p>Your data is protected with advanced security</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/static/images/sure.jpg.avif" alt="Support">
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Get help anytime from our support team</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/static/images/premium.jpg" alt="Premium">
+                </div>
+                <h3>Premium Selection</h3>
+                <p>Access to exclusive hotels and luxury properties</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- this is for the popup message -->
+{% if search_msg %}
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="popupModal">
+    <div class="modal-content">
+        <h2>Notice</h2>
+        <p>{{ search_msg }}</p>
+        <button id="modalOkBtn">OK</button>
+    </div>
+</div>
+
+<script>
+    // Close modal when user clicks OK
+    const modal = document.getElementById('popupModal');
+    const okBtn = document.getElementById('modalOkBtn');
+
+    okBtn.addEventListener('click', () => {
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        setTimeout(() => modal.remove(), 300);
+    });
+</script>
+{% endif %}
+
+{% endblock %}

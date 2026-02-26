@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="create-wrapper">
+    <div class="create-box">
+        <h2>Create Your Account</h2>
+
+        <!-- Flash messages display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ 'success-message' if category == 'success' else 'error-message' }} show">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Client-side error message display -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <form method="POST" action="{{ url_for('create') }}" id="createForm">
+            <div class="input-group">
+                <label>First Name</label>
+                <input type="text" name="firstname" id="firstname" placeholder="Enter your first name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" name="lastname" id="lastname" placeholder="Enter your last name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" name="username" id="username" placeholder="Choose a username" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter a password" required>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Re-enter your password" required>
+            </div>
+
+            <div class="privacy-group">
+                <input type="checkbox" name="privacy" id="privacy" required>
+                <label for="privacy">
+                    I agree to the <a href="{{ url_for('privacy') }}">Terms of Service</a> and <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                </label>
+            </div>
+
+            <button type="submit" class="create-btn">Create Account</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="{{ url_for('signin') }}">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('createForm').addEventListener('submit', function(e) {
+        const firstname = document.getElementById('firstname').value.trim();
+        const lastname = document.getElementById('lastname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const privacy = document.getElementById('privacy').checked;
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Clear previous error
+        errorMessage.classList.remove('show');
+        errorMessage.textContent = '';
+
+        // Validate all fields
+        if (!firstname || !lastname || !email || !username || !password || !confirmPassword) {
+            e.preventDefault();
+            errorMessage.textContent = 'Please fill in all fields!';
+            errorMessage.classList.add('show');
+            return false;
+        }
+
+        // Validate privacy checkbox
+        if (!privacy) {
+            e.preventDefault();
+            errorMessage.textContent = 'Please accept the Terms of Service and Privacy Policy to continue.';
+            errorMessage.classList.add('show');
+            return false;
+        }
+
+        // Validate password match
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            errorMessage.textContent = 'Passwords do not match!';
+            errorMessage.classList.add('show');
+            return false;
+        }
+
+        // Validate password strength (optional)
+        if (password.length < 6) {
+            e.preventDefault();
+            errorMessage.textContent = 'Password must be at least 6 characters long!';
+            errorMessage.classList.add('show');
+            return false;
+        }
+    });
+</script>
+{% endblock %}

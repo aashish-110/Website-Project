@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+    {% block title %}World Hotel{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link rel="stylesheet" href="/static/css/home.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+    <div class="bgimage">
+        <div class="navbar">
+            <div class="logo">
+                <a href="{{ url_for('home') }}">
+                    <img src="/static/images/logo.png" alt="World Hotel Logo">
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="text" id="mobileMenu">
+                <a href="{{ url_for('home') }}">Home</a>
+                <div class="nav-item">
+                    <a href="javascript:void(0);">
+                        Location <span class="arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="{{ url_for('location', city='aberdeen') }}">Aberdeen</a>
+                        <a href="{{ url_for('location', city='belfast') }}">Belfast</a>
+                        <a href="{{ url_for('location', city='birmingham') }}">Birmingham</a>
+                        <a href="{{ url_for('location', city='bristol') }}">Bristol</a>
+                        <a href="{{ url_for('location', city='cardiff') }}">Cardiff</a>
+                        <a href="{{ url_for('location', city='edinburgh') }}">Edinburgh</a>
+                        <a href="{{ url_for('location', city='glasgow') }}">Glasgow</a>
+                        <a href="{{ url_for('location', city='london') }}">London</a>
+                        <a href="{{ url_for('location', city='manchester') }}">Manchester</a>
+                        <a href="{{ url_for('location', city='newcastle') }}">New Castle</a>
+                        <a href="{{ url_for('location', city='norwich') }}">Norwich</a>
+                        <a href="{{ url_for('location', city='nottingham') }}">Nottingham</a>
+                        <a href="{{ url_for('location', city='oxford') }}">Oxford</a>
+                        <a href="{{ url_for('location', city='plymouth') }}">Plymouth</a>
+                        <a href="{{ url_for('location', city='swansea') }}">Swansea</a>
+                        <a href="{{ url_for('location', city='bournemouth') }}">Bournemouth</a>
+                        <a href="{{ url_for('location', city='kent') }}">Kent</a>
+                    </div>
+                </div>
+                <a href="{{ url_for('about') }}">About Us</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('blog') }}">Blog</a>
+            </div>
+
+            <div class="signin">
+                {% if loggedin %}
+                    <a href="{{ url_for('user_dashboard') }}" class="profile-link">
+                        {% if profile_pic %}
+                            <img src="{{ url_for('static', filename=profile_pic) }}" alt="Profile" class="profile-pic">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default.png') }}" alt="Profile" class="profile-pic">
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('signin') }}" class="btn login">Log In</a>
+                    <a href="{{ url_for('create') }}" class="btn signup">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    {% block footer %}
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col hotel-info">
+                <p class="hotel-name">WORLD HOTEL</p>
+                <p class="thanks">Thanks for choosing us</p>
+                <p class="description">
+                    Experience luxury, comfort, and world-class service at all our locations.
+                </p>
+            </div>
+            <div class="footer-col footer-links">
+                <h3>Quick Links</h3>
+                <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                <a href="{{ url_for('privacy') }}">Terms of Service</a>
+                <a href="{{ url_for('privacy') }}">Cookie Policy</a>
+            </div>
+            <div class="footer-col social-media">
+                <h3>Contact Us</h3>
+                <p>📞 +977-9844021177</p>
+                <p>✉️ worldhotelno1@gmail.com</p>
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://x.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/direct/t/110303407028937/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 World Hotel. All Rights Reserved.
+        </div>
+    </footer>
+    {% endblock %}
+
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const navbar = document.querySelector('.navbar');
+
+            // Check if click is outside navbar
+            if (!navbar.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // Close menu when a link is clicked (except Location dropdown)
+        document.querySelectorAll('.text > a:not(.nav-item a)').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('mobileMenu').classList.remove('active');
+                }
+            });
+        });
+
+        // Close menu when clicking dropdown links
+        document.querySelectorAll('.dropdown-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('mobileMenu').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

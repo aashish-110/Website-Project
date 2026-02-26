@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/contact.css">
+{% endblock %}
+
+{% block content %}
+<section class="contact-hero">
+    <div class="overlay">
+        <h1>Contact Us</h1>
+        <p>We’re here to help. Reach out to us through the details below.</p>
+    </div>
+</section>
+
+<section class="contact-content">
+    <div class="container">
+        <div class="contact-info">
+            <div class="info-box">
+                <h3>Address</h3>
+                <p>123 World Hotel Street, Kathmandu, Nepal</p>
+            </div>
+            <div class="info-box">
+                <h3>Phone</h3>
+                <p>📞 +977-9844021177</p>
+            </div>
+            <div class="info-box">
+                <h3>Email</h3>
+                <p>✉️ thakuraashik27@gmail.com</p>
+            </div>
+            <div class="info-box">
+                <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com" target="_blank" class="facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.x.com" target="_blank" class="x">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" target="_blank" class="instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Manchester Rooms | World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/locationcss/manchester.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section class="rooms-section">
+
+    <h1 class="section-title">Luxury Rooms in Manchester</h1>
+    <p class="section-subtitle">
+        Discover comfort, elegance, and timeless luxury at World Hotel Manchester.
+    </p>
+
+    <div class="rooms-container">
+
+        {% if rooms %}
+            {% for room in rooms %}
+                <div class="room-card">
+                    <!-- Availability Badge -->
+                    <div class="availability-badge {% if room.status == 'Available' and room.room_count > 0 %}available{% else %}unavailable{% endif %}">
+                        {% if room.status == 'Available' and room.room_count > 0 %}
+                            <i class="fa-solid fa-circle-check"></i> Available
+                        {% else %}
+                            <i class="fa-solid fa-circle-xmark"></i> Not Available
+                        {% endif %}
+                    </div>
+
+                    {% if room.images and room.images|trim %}
+                        <img src="{{ url_for('static', filename=room.images) }}" alt="{{ room.room_name }}" onerror="this.src='/static/images/default-room.jpg'">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default-room.jpg') }}" alt="{{ room.room_name }}">
+                    {% endif %}
+
+                    <h2>{{ room.room_name }}</h2>
+
+                    <p class="room-desc">
+                        {% if 'single' in room.room_name.lower() or 'standard' in room.room_name.lower() %}
+                            Perfect for solo travelers, offering a peaceful stay with modern comfort and style.
+                        {% elif 'double' in room.room_name.lower() %}
+                            Designed for couples, featuring spacious interiors and beautiful city views with style.
+                        {% elif 'family' in room.room_name.lower() %}
+                            Ideal for families, with extra space, comfort, and a warm luxurious atmosphere.
+                        {% else %}
+                            Experience luxury and comfort in this beautiful room.
+                        {% endif %}
+                    </p>
+
+                    <ul class="room-features">
+                        <li><i class="fa-solid fa-wifi"></i> Free Wi-Fi</li>
+                        <li><i class="fa-solid fa-wine-glass"></i> Mini Bar</li>
+                        <li><i class="fa-solid fa-mug-saucer"></i> Breakfast Included</li>
+                    </ul>
+
+                    <!-- Rooms Available Count -->
+                    <div class="rooms-count">
+                        <i class="fa-solid fa-door-open"></i> 
+                        <span>{{ room.room_count if room.room_count else 0 }} room(s) available</span>
+                    </div>
+
+                    <div class="room-price">
+                        <span class="regular-price">£{{ room.price }}</span> / night
+                        {% if room.peak_season and room.peak_season != room.price %}
+                            <small class="peak-info">(Peak: £{{ room.peak_season }})</small>
+                        {% endif %}
+                    </div>
+                    
+                    {% if room.status == 'Available' and room.room_count > 0 %}
+                        <a href="{{ url_for('book', city=city) }}" class="book-btn">Book Now</a>
+                    {% else %}
+                        <button class="book-btn disabled" disabled>Fully Booked</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback if no rooms found -->
+            <div class="room-card">
+                <div class="availability-badge available">
+                    <i class="fa-solid fa-circle-check"></i> Available
+                </div>
+                <img src="{{ url_for('static', filename='images/single8.jpg') }}" alt="Single Room">
+                <h2>Single Room</h2>
+                <p class="room-desc">Perfect for solo travelers, offering a peaceful stay with modern comfort and style.</p>
+                <ul class="room-features">
+                    <li><i class="fa-solid fa-wifi"></i> Free Wi-Fi</li>
+                    <li><i class="fa-solid fa-wine-glass"></i> Mini Bar</li>
+                    <li><i class="fa-solid fa-mug-saucer"></i> Breakfast Included</li>
+                </ul>
+                <div class="rooms-count">
+                    <i class="fa-solid fa-door-open"></i> 
+                    <span>5 room(s) available</span>
+                </div>
+                <div class="room-price">£120 / night</div>
+                <a href="{{ url_for('book', city=city) }}" class="book-btn">Book Now</a>
+            </div>
+
+            <div class="room-card">
+                <div class="availability-badge available">
+                    <i class="fa-solid fa-circle-check"></i> Available
+                </div>
+                <img src="{{ url_for('static', filename='images/double8.jpg') }}" alt="Double Room">
+                <h2>Double Room</h2>
+                <p class="room-desc">Designed for couples, featuring spacious interiors and beautiful city views with style.</p>
+                <ul class="room-features">
+                    <li><i class="fa-solid fa-wifi"></i> Free Wi-Fi</li>
+                    <li><i class="fa-solid fa-wine-glass"></i> Mini Bar</li>
+                    <li><i class="fa-solid fa-mug-saucer"></i> Breakfast Included</li>
+                </ul>
+                <div class="rooms-count">
+                    <i class="fa-solid fa-door-open"></i> 
+                    <span>3 room(s) available</span>
+                </div>
+                <div class="room-price">£144 / night</div>
+                <a href="{{ url_for('book', city=city) }}" class="book-btn">Book Now</a>
+            </div>
+
+            <div class="room-card">
+                <div class="availability-badge available">
+                    <i class="fa-solid fa-circle-check"></i> Available
+                </div>
+                <img src="{{ url_for('static', filename='images/family8.jpg') }}" alt="Family Room">
+                <h2>Family Room</h2>
+                <p class="room-desc">Ideal for families, with extra space, comfort, and a warm luxurious atmosphere.</p>
+                <ul class="room-features">
+                    <li><i class="fa-solid fa-wifi"></i> Free Wi-Fi</li>
+                    <li><i class="fa-solid fa-wine-glass"></i> Mini Bar</li>
+                    <li><i class="fa-solid fa-mug-saucer"></i> Breakfast Included</li>
+                </ul>
+                <div class="rooms-count">
+                    <i class="fa-solid fa-door-open"></i> 
+                    <span>2 room(s) available</span>
+                </div>
+                <div class="room-price">£180 / night</div>
+                <a href="{{ url_for('book', city=city) }}" class="book-btn">Book Now</a>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

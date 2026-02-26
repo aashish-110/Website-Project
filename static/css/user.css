@@ -1,0 +1,306 @@
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap');
+
+.dashboard-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 3rem 1.5rem;
+    position: relative;
+    min-height: 70vh;
+}
+
+/* Clean gradient background */
+.dashboard-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom right, #f0f9ff 0%, #e0e7ff 50%, #fce7f3 100%);
+    z-index: -1;
+}
+
+/* ========================================
+   DASHBOARD BOX
+   ======================================== */
+
+.dashboard-box {
+    background: #ffffff;
+    border-radius: 2rem;
+    padding: 3rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   WELCOME HEADING
+   ======================================== */
+
+.dashboard-box h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: #111827;
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ========================================
+   PROFILE PICTURE
+   ======================================== */
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 2rem;
+    position: relative;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient ring around profile */
+.profile-picture::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #ec4899, #14b8a6);
+    z-index: -1;
+    opacity: 0.7;
+}
+
+/* ========================================
+   USER INFO
+   ======================================== */
+
+.user-info {
+    background: #f9fafb;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #6366f1;
+}
+
+.user-info p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info p:last-child {
+    margin-bottom: 0;
+}
+
+.user-info strong {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* ========================================
+   DASHBOARD BUTTONS
+   ======================================== */
+
+.dashboard-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.dashboard-buttons .btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Primary buttons */
+.dashboard-buttons .btn:nth-child(1) {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-buttons .btn:nth-child(2) {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Logout button */
+.logout-btn {
+    background: #ffffff;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effects */
+.dashboard-buttons .btn:not(.logout-btn):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-buttons .btn:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
+    .dashboard-wrapper {
+        max-width: 700px;
+        padding: 2rem 1.5rem;
+    }
+    
+    .dashboard-box {
+        padding: 2rem;
+    }
+    
+    .profile-picture {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+/* Mobile (up to 767px) */
+@media (max-width: 767px) {
+    .dashboard-wrapper {
+        padding: 1.5rem 1rem;
+    }
+    
+    .dashboard-box {
+        padding: 1.5rem;
+    }
+    
+    .dashboard-box h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .user-info {
+        padding: 1rem;
+    }
+    
+    .user-info p {
+        font-size: 0.875rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .dashboard-buttons {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .dashboard-buttons .btn {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9375rem;
+    }
+}
+
+/* Extra Small Mobile (up to 374px) */
+@media (max-width: 374px) {
+    .dashboard-box {
+        padding: 1rem;
+    }
+    
+    .dashboard-box h2 {
+        font-size: 1.375rem;
+    }
+    
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+.dashboard-wrapper *:focus-visible {
+    outline: 3px solid #6366f1;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+@media print {
+    .dashboard-wrapper::before {
+        display: none;
+    }
+    
+    .dashboard-box {
+        box-shadow: none;
+        border: 1px solid #d1d5db;
+    }
+    
+    .logout-btn {
+        display: none;
+    }
+}

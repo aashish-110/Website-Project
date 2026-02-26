@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/blog.css">
+{% endblock %}
+
+{% block content %}
+<section class="blog-hero">
+    <div class="overlay">
+        <h1>World Hotel Blog</h1>
+        <p>Discover luxury stays, travel tips, and behind-the-scenes stories from World Hotel.</p>
+    </div>
+</section>
+
+<section class="blog-posts">
+    <div class="container">
+        <!-- Blog Post 1 -->
+        <div class="blog-card">
+            <img src="/static/images/family1.jpg" alt="Luxury Room">
+            <div class="blog-content">
+                <h2>Experience Our Luxurious Suites</h2>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p>Our suites are designed for comfort and elegance, featuring breathtaking city views, plush beds, and personalized service to make your stay unforgettable.</p>
+            </div>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="blog-card">
+            <img src="/static/images/din.jpg" alt="Dining">
+            <div class="blog-content">
+                <h2>World-Class Dining Experience</h2>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p>Indulge in gourmet cuisine prepared by top chefs. From local flavors to international delicacies, our restaurants promise a culinary journey like no other.</p>
+            </div>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="blog-card">
+            <img src="/static/images/spa.jpg" alt="Spa">
+            <div class="blog-content">
+                <h2>Relax at Our 5-Star Spa</h2>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p>Unwind with our luxurious spa treatments, from massages to wellness therapies, designed to rejuvenate your body and mind in a serene atmosphere.</p>
+            </div>
+        </div>
+
+        <!-- Blog Post 4 -->
+        <div class="blog-card">
+            <img src="/static/images/event.jpg" alt="Conference Hall">
+            <div class="blog-content">
+                <h2>Host Events in Style</h2>
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p>Our state-of-the-art conference halls and event spaces are perfect for meetings, weddings, and celebrations, equipped with top-notch facilities and impeccable service.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

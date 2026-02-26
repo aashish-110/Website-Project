@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+    <div class="login-box">
+        <h2>Reset Password</h2>
+
+        {% if msg %}
+            <p class="error">{{ msg }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <div class="input-group">
+                <label>4-Digit Code</label>
+                <input type="text" name="code" placeholder="Enter the code" maxlength="4" required>
+            </div>
+
+            <div class="input-group">
+                <label>New Password</label>
+                <input type="password" name="password" placeholder="Enter new password" required>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm" placeholder="Confirm password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Reset Password</button>
+
+            <div class="back-link">
+                <a href="{{ url_for('signin') }}">Back to Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

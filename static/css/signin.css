@@ -1,0 +1,370 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Login wrapper - centers the login box */
+.login-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: calc(100vh - 60px); /* Adjust based on your header/footer */
+    margin-top: 70px;
+}
+
+/* Login box */
+.login-box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+.login-box h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Error message */
+.error {
+    background: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #fcc;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Input group */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 2px;
+}
+
+.input-group input {
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #fafafa;
+}
+
+.input-group input:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-group input::placeholder {
+    color: #aaa;
+}
+
+/* Forgot password link */
+.forgot {
+    text-align: right;
+    margin-top: -10px;
+}
+
+.forgot a {
+    color: #667eea;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Login button */
+.login-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Popup overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Popup box */
+.popup-box {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.popup-box h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.popup-box p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.popup-box button {
+    background: #667eea;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.popup-box button:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 30px 25px;
+        max-width: 400px;
+    }
+
+    .login-box h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    .input-group input {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .login-btn {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .popup-box {
+        padding: 25px;
+        max-width: 350px;
+    }
+
+    .popup-box h3 {
+        font-size: 20px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .login-wrapper {
+        padding: 15px;
+        min-height: 100vh;
+    }
+
+    .login-box {
+        padding: 25px 20px;
+        border-radius: 10px;
+    }
+
+    .login-box h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        gap: 6px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+    }
+
+    .input-group input {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .forgot a {
+        font-size: 13px;
+    }
+
+    .login-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .error {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .popup-box {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .popup-box h3 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .popup-box p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .popup-box button {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 360px) {
+    .login-box {
+        padding: 20px 15px;
+    }
+
+    .login-box h2 {
+        font-size: 20px;
+    }
+
+    form {
+        gap: 15px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .login-wrapper {
+        padding: 10px;
+    }
+
+    .login-box {
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    .login-box h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    form {
+        gap: 12px;
+    }
+
+    .input-group input {
+        padding: 10px 12px;
+    }
+
+    .login-btn {
+        padding: 10px;
+        margin-top: 5px;
+    }
+}

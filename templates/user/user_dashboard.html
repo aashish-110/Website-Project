@@ -1,0 +1,39 @@
+<!-- user/user_dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <div class="dashboard-box">
+        <!-- Welcome Message -->
+        <h2>Welcome, {{ username }}!</h2>
+
+        <!-- Profile Picture with Default Handling -->
+        <div class="profile-picture">
+            {% if profile_pic and profile_pic != 'images/default.jpg' %}
+                <img src="{{ url_for('static', filename=profile_pic) }}" alt="Profile Picture">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/default.jpg') }}" alt="Default Profile Picture">
+            {% endif %}
+        </div>
+
+        <!-- User Info -->
+        <div class="user-info">
+            <p><strong>Username:</strong> {{ username }}</p>
+            <p><strong>Role:</strong> {{ role }}</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="dashboard-buttons">
+            <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+            <a href="{{ url_for('user_bookings') }}" class="btn">My Bookings</a>
+            <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}All Bookings - Admin{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    
+    .stat-card h3 {
+        margin: 0;
+        font-size: 2rem;
+        color: #2c3e50;
+    }
+    
+    .stat-card p {
+        margin: 0.5rem 0 0;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+    
+    .filter-bar {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .filter-bar input {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 0.5rem;
+        width: 300px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-content">
+        
+        <div class="section-header">
+            <h1 class="section-title">📋 All Bookings</h1>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <span class="btn-icon">⬅️</span> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ stats.total_bookings or 0 }}</h3>
+                <p>Total Bookings</p>
+            </div>
+            <div class="stat-card">
+                <h3>£{{ "%.2f"|format(stats.total_revenue or 0) }}</h3>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search by customer name, email, hotel..." onkeyup="filterTable()">
+        </div>
+
+        <!-- Bookings Table -->
+        <section class="management-section">
+            {% if bookings %}
+            <div class="table-container">
+                <table class="data-table" id="bookingsTable">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Hotel</th>
+                            <th>Room</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Days</th>
+                            <th>Total Price</th>
+                            <th>Booked On</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td data-label="Booking ID"><strong>#{{ booking.booking_id }}</strong></td>
+                            <td data-label="Customer">
+                                <div><strong>{{ booking.customer_name }}</strong></div>
+                                <small style="color: #7f8c8d;">{{ booking.username }} ({{ booking.email }})</small>
+                            </td>
+                            <td data-label="Hotel">
+                                <div><strong>{{ booking.hotel_name }}</strong></div>
+                                <small style="color: #7f8c8d;">{{ booking.location }}</small>
+                            </td>
+                            <td data-label="Room">{{ booking.room_name }}</td>
+                            <td data-label="Check-in">
+                                {% if booking.check_in is string %}
+                                    {{ booking.check_in }}
+                                {% else %}
+                                    {{ booking.check_in.strftime('%Y-%m-%d') }}
+                                {% endif %}
+                            </td>
+                            <td data-label="Check-out">
+                                {% if booking.check_out is string %}
+                                    {{ booking.check_out }}
+                                {% else %}
+                                    {{ booking.check_out.strftime('%Y-%m-%d') }}
+                                {% endif %}
+                            </td>
+                            <td data-label="Days">{{ booking.num_days }}</td>
+                            <td data-label="Total Price"><strong>£{{ "%.2f"|format(booking.total_price) }}</strong></td>
+                            <td data-label="Booked On">
+                                {% if booking.booking_date is string %}
+                                    {{ booking.booking_date }}
+                                {% else %}
+                                    {{ booking.booking_date.strftime('%Y-%m-%d %H:%M') }}
+                                {% endif %}
+                            </td>
+                            <td data-label="Actions">
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('admin_cancel_booking_management', booking_id=booking.booking_id) }}" class="btn-cancel">
+                                        Cancel Booking
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <p>No bookings found in the system.</p>
+            </div>
+            {% endif %}
+        </section>
+
+    </div>
+</div>
+
+<script>
+function filterTable() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const table = document.getElementById('bookingsTable');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const text = row.textContent.toLowerCase();
+        
+        row.style.display = text.includes(searchInput) ? '' : 'none';
+    }
+}
+</script>
+{% endblock %}

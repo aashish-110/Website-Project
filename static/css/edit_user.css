@@ -1,0 +1,336 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dashboard wrapper */
+.dashboard-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+    margin-top: 140px;
+}
+
+/* Dashboard box */
+.dashboard-box {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 45px;
+    width: 100%;
+    max-width: 540px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+.dashboard-box h2 {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 35px;
+    font-size: 28px;
+    font-weight: 700;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #667eea;
+}
+
+/* Alert messages */
+.alert {
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* Form group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 2px;
+}
+
+/* Form controls */
+.form-control {
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #f7fafc;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* Input type password specific styling */
+input[type="password"].form-control {
+    letter-spacing: 0.5px;
+}
+
+input[type="password"].form-control::placeholder {
+    letter-spacing: normal;
+    font-size: 14px;
+    color: #a0aec0;
+}
+
+/* Select dropdown */
+select.form-control {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    margin-top: 15px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
+
+/* Password field hint */
+.form-group:has(input[type="password"]) label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        margin-top: 100px;
+    }
+
+    .dashboard-box {
+        padding: 35px 30px;
+        max-width: 500px;
+    }
+
+    .dashboard-box h2 {
+        font-size: 26px;
+        margin-bottom: 30px;
+    }
+
+    form {
+        gap: 20px;
+    }
+
+    .form-control {
+        padding: 13px 15px;
+        font-size: 15px;
+    }
+
+    .btn {
+        padding: 13px 22px;
+        font-size: 15px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .dashboard-wrapper {
+        padding: 15px;
+        margin-top: 80px;
+        min-height: calc(100vh - 60px);
+    }
+
+    .dashboard-box {
+        padding: 30px 25px;
+        border-radius: 14px;
+    }
+
+    .dashboard-box h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    form {
+        gap: 18px;
+    }
+
+    .form-group {
+        gap: 6px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-control {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    input[type="password"].form-control::placeholder {
+        font-size: 13px;
+    }
+
+    select.form-control {
+        background-position: right 14px center;
+        padding-right: 36px;
+    }
+
+    .btn {
+        padding: 13px 20px;
+        font-size: 15px;
+    }
+
+    .alert {
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 360px) {
+    .dashboard-box {
+        padding: 25px 20px;
+    }
+
+    .dashboard-box h2 {
+        font-size: 22px;
+    }
+
+    form {
+        gap: 16px;
+    }
+
+    .form-control {
+        padding: 11px 13px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .dashboard-wrapper {
+        padding: 10px;
+        margin-top: 20px;
+    }
+
+    .dashboard-box {
+        padding: 25px 20px;
+        margin: 10px 0;
+    }
+
+    .dashboard-box h2 {
+        font-size: 22px;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+    }
+
+    form {
+        gap: 14px;
+    }
+
+    .form-control {
+        padding: 10px 12px;
+    }
+
+    .btn {
+        padding: 11px 18px;
+        margin-top: 5px;
+    }
+
+    .btn-danger {
+        margin-top: 10px;
+    }
+}

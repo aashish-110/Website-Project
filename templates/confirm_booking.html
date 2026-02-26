@@ -1,0 +1,630 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Booking | World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/confirm.css') }}">
+<style>
+    /* Custom Alert Styles */
+    .custom-alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .custom-alert-overlay.active {
+        opacity: 1;
+    }
+
+    .custom-alert-box {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transform: translateY(20px);
+        transition: transform 0.3s;
+    }
+
+    .custom-alert-overlay.active .custom-alert-box {
+        transform: translateY(0);
+    }
+
+    .custom-alert-icon {
+        font-size: 50px;
+        margin-bottom: 20px;
+    }
+
+    .custom-alert-icon.error { color: #dc3545; }
+    .custom-alert-icon.warning { color: #ffc107; }
+    .custom-alert-icon.success { color: #28a745; }
+    .custom-alert-icon.info { color: #17a2b8; }
+
+    .custom-alert-message {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+
+    .custom-alert-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .custom-alert-btn:hover {
+        background: #5a67d8;
+        transform: translateY(-2px);
+    }
+
+    /* Rules Info Styles */
+    .rules-info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        border-left: 4px solid #667eea;
+    }
+
+    .rules-info p {
+        margin: 5px 0;
+        color: #666;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .rules-info strong {
+        color: #2c3e50;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <div class="confirm-box">
+        <h2>Confirm Your Booking</h2>
+
+        <!-- Rules Info Section -->
+        <div class="rules-info">
+            <p><span>📅</span> Maximum booking duration: <strong>{{ max_booking_days }} days</strong></p>
+            <p><span>ℹ️</span> You can adjust dates within the allowed limit</p>
+        </div>
+
+        <!-- ================= CURRENCY SWITCHER ================= -->
+        <div class="currency-switcher">
+            <label for="currency">Currency</label>
+            <select id="currency">
+                <option value="GBP" selected>£ GBP (British Pound)</option>
+                <option value="USD">$ USD (US Dollar)</option>
+                <option value="NPR">₨ NPR (Nepali Rupee)</option>
+                <option value="AUD">$ AUD (Australian Dollar)</option>
+                <option value="INR">₹ INR (Indian Rupee)</option>
+            </select>
+        </div>
+
+        <!-- ================= GUEST INFO ================= -->
+        <div class="guest-info">
+            <p>
+                <span><strong>Full Name:</strong> <span id="display-fullname">{{ fullname }}</span></span>
+            </p>
+            <p>
+                <span><strong>Email:</strong> <span id="display-email">{{ email }}</span></span>
+            </p>
+            <p>
+                <span><strong>Location:</strong> {{ location }}</span>
+            </p>
+            <p>
+                <span><strong>Check-in:</strong> <span id="display-checkin">{{ checkin }}</span></span>
+                <button class="edit-btn" onclick="openEditModal('dates')">✏️ Edit Dates</button>
+            </p>
+            <p>
+                <span><strong>Check-out:</strong> <span id="display-checkout">{{ checkout }}</span></span>
+            </p>
+            <p>
+                <span><strong>Guests:</strong> <span id="display-guests">{{ guests }}</span></span>
+                <button class="edit-btn" onclick="openEditModal('guests')">✏️ Edit Guests</button>
+            </p>
+            <p>
+                <span><strong>Days:</strong> <span id="display-days">{{ num_days }}</span></span>
+            </p>
+        </div>
+
+        <!-- ================= HOTELS & ROOMS ================= -->
+        {% for hotel in hotels %}
+        <div class="hotel-block">
+            <h3>{{ hotel.hotel_name }} – {{ hotel.location }}</h3>
+
+            <table class="room-table">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Room</th>
+                        <th>Available</th>
+                        <th>Price / Night</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in hotel_rooms[hotel.hotel_id] %}
+                    <tr>
+                        <td>
+                            <input type="radio" name="selected_room"
+                                data-room-id="{{ room.room_id }}"
+                                data-room-name="{{ room.room_name }}"
+                                data-room-type="{{ room.room_name | lower }}"
+                                data-hotel-name="{{ hotel.hotel_name }}"
+                                data-gbp="{{ room.final_price }}">
+                        </td>
+                        <td>{{ room.room_name }}</td>
+                        <td>{{ room.room_count }}</td>
+                        <td>
+                            <span class="price" data-gbp="{{ room.final_price }}">
+                                £{{ room.final_price }}
+                            </span>
+                            {% if room.discount > 0 %}
+                                <span class="discount">(-{{ room.discount }}%)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+
+        <!-- ================= CONFIRM ================= -->
+        <button id="confirmBookingBtn" class="confirm-btn">
+            Confirm Booking
+        </button>
+    </div>
+</div>
+
+<!-- ================= EDIT MODAL ================= -->
+<div id="editModal" class="edit-modal">
+    <div class="edit-modal-content">
+        <h3 id="modal-title">Edit Booking Details</h3>
+        
+        <!-- Edit Dates Form -->
+        <div id="edit-dates-form" style="display: none;">
+            <div class="edit-form-group">
+                <label for="edit-checkin">Check-in Date:</label>
+                <input type="date" id="edit-checkin" value="{{ checkin }}" min="{{ checkin }}">
+            </div>
+            <div class="edit-form-group">
+                <label for="edit-checkout">Check-out Date:</label>
+                <input type="date" id="edit-checkout" value="{{ checkout }}" min="{{ checkin }}">
+            </div>
+            <div class="rule-note">
+                <small>⏱️ Maximum stay: {{ max_booking_days }} days</small>
+            </div>
+        </div>
+        
+        <!-- Edit Guests Form -->
+        <div id="edit-guests-form" style="display: none;">
+            <div class="edit-form-group">
+                <label for="edit-guests">Number of Guests:</label>
+                <input type="number" id="edit-guests" value="{{ guests }}" min="1" max="10">
+            </div>
+            <div class="rule-note">
+                <small>Maximum guests per room type:
+                    <br>• Standard: 1 guest
+                    <br>• Double: 2 guests
+                    <br>• Family: 4 guests
+                </small>
+            </div>
+        </div>
+        
+        <div class="edit-modal-buttons">
+            <button class="save-edit-btn" onclick="saveEdit()">Save Changes</button>
+            <button class="cancel-edit-btn" onclick="closeEditModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+// ========================================
+// PASS DYNAMIC BOOKING RULES FROM FLASK
+// ========================================
+const BOOKING_RULES = {
+    max_booking_days: {{ max_booking_days|default(30) }}
+};
+
+/* ========================================
+   CUSTOM ALERT SYSTEM
+   ======================================== */
+
+function showCustomAlert(message, type = 'error') {
+    const existingOverlay = document.querySelector('.custom-alert-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+
+    const icons = {
+        error: '❌',
+        warning: '⚠️',
+        success: '✅',
+        info: 'ℹ️'
+    };
+
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+    
+    overlay.innerHTML = `
+        <div class="custom-alert-box">
+            <div class="custom-alert-icon ${type}">
+                ${icons[type] || icons.error}
+            </div>
+            <div class="custom-alert-message">${message}</div>
+            <button class="custom-alert-btn">OK</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => overlay.classList.add('active'), 10);
+    
+    const closeBtn = overlay.querySelector('.custom-alert-btn');
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 300);
+    });
+    
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        }
+    });
+    
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+}
+
+/* ========================================
+   CURRENCY CONVERSION RATES
+   ======================================== */
+
+// Default fallback rates (in case API fails)
+let EXCHANGE_RATES = {
+    USD: 1.27,
+    NPR: 171.50,
+    AUD: 1.93,
+    INR: 106.50
+};
+
+const CURRENCY_SYMBOLS = {
+    GBP: '£',
+    USD: '$',
+    NPR: '₨',
+    AUD: '$',
+    INR: '₹'
+};
+
+// Fetch live exchange rates from server
+async function fetchExchangeRates() {
+    try {
+        const response = await fetch('/api/get-exchange-rates');
+        const data = await response.json();
+        
+        if (data.success && data.rates) {
+            EXCHANGE_RATES = data.rates;
+            console.log('Exchange rates loaded:', EXCHANGE_RATES);
+        }
+    } catch (error) {
+        console.error('Failed to fetch exchange rates, using defaults:', error);
+    }
+}
+
+// Load rates when page loads
+fetchExchangeRates();
+
+/* ========================================
+   BOOKING VARIABLES
+   ======================================== */
+
+const STANDARD_ROOM_PRICE = 100;
+let currentGuests = parseInt("{{ guests }}");
+let currentCheckin = "{{ checkin }}";
+let currentCheckout = "{{ checkout }}";
+let currentDays = parseInt("{{ num_days }}");
+const MAX_BOOKING_DAYS = BOOKING_RULES.max_booking_days;  // Dynamic from database
+
+const currencySelect = document.getElementById("currency");
+const priceEls = document.querySelectorAll(".price");
+
+/* ========================================
+   EDIT MODAL FUNCTIONS
+   ======================================== */
+
+let currentEditType = '';
+
+function openEditModal(type) {
+    currentEditType = type;
+    const modal = document.getElementById('editModal');
+    const datesForm = document.getElementById('edit-dates-form');
+    const guestsForm = document.getElementById('edit-guests-form');
+    const modalTitle = document.getElementById('modal-title');
+    
+    datesForm.style.display = 'none';
+    guestsForm.style.display = 'none';
+    
+    if (type === 'dates') {
+        modalTitle.textContent = 'Edit Check-in & Check-out Dates';
+        datesForm.style.display = 'block';
+        
+        // Calculate minimum checkout date (next day)
+        const checkinDate = new Date(currentCheckin);
+        const minCheckout = new Date(checkinDate);
+        minCheckout.setDate(minCheckout.getDate() + 1);
+        
+        // Calculate maximum checkout date based on booking rules
+        const maxCheckout = new Date(checkinDate);
+        maxCheckout.setDate(maxCheckout.getDate() + MAX_BOOKING_DAYS);
+        
+        document.getElementById('edit-checkin').value = currentCheckin;
+        document.getElementById('edit-checkout').value = currentCheckout;
+        document.getElementById('edit-checkin').min = currentCheckin;
+        document.getElementById('edit-checkout').min = minCheckout.toISOString().split('T')[0];
+        document.getElementById('edit-checkout').max = maxCheckout.toISOString().split('T')[0];
+        
+    } else if (type === 'guests') {
+        modalTitle.textContent = 'Edit Number of Guests';
+        guestsForm.style.display = 'block';
+        document.getElementById('edit-guests').value = currentGuests;
+    }
+    
+    modal.classList.add('active');
+}
+
+function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    modal.classList.remove('active');
+}
+
+function saveEdit() {
+    if (currentEditType === 'dates') {
+        const newCheckin = document.getElementById('edit-checkin').value;
+        const newCheckout = document.getElementById('edit-checkout').value;
+        
+        if (!newCheckin || !newCheckout) {
+            showCustomAlert('Please select both check-in and check-out dates', 'error');
+            return;
+        }
+        
+        const checkinDate = new Date(newCheckin);
+        const checkoutDate = new Date(newCheckout);
+        
+        if (checkoutDate <= checkinDate) {
+            showCustomAlert('Check-out date must be after check-in date', 'error');
+            return;
+        }
+        
+        const daysDiff = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+        
+        // Use dynamic max booking days from database
+        if (daysDiff > MAX_BOOKING_DAYS) {
+            showCustomAlert(`Maximum booking duration is ${MAX_BOOKING_DAYS} days`, 'error');
+            return;
+        }
+        
+        // Check if check-in date is today or in the future
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (checkinDate < today) {
+            showCustomAlert('Check-in date cannot be in the past', 'error');
+            return;
+        }
+        
+        // Update values
+        currentCheckin = newCheckin;
+        currentCheckout = newCheckout;
+        currentDays = daysDiff;
+        
+        // Update display
+        document.getElementById('display-checkin').textContent = newCheckin;
+        document.getElementById('display-checkout').textContent = newCheckout;
+        document.getElementById('display-days').textContent = daysDiff;
+        
+        showCustomAlert('Dates updated successfully!', 'success');
+        closeEditModal();
+        
+    } else if (currentEditType === 'guests') {
+        const newGuests = parseInt(document.getElementById('edit-guests').value);
+        
+        if (newGuests < 1 || newGuests > 10) {
+            showCustomAlert('Number of guests must be between 1 and 10', 'error');
+            return;
+        }
+        
+        currentGuests = newGuests;
+        document.getElementById('display-guests').textContent = newGuests;
+        
+        showCustomAlert('Number of guests updated successfully!', 'success');
+        closeEditModal();
+    }
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeEditModal();
+    }
+});
+
+// Close modal when clicking outside
+document.getElementById('editModal').addEventListener('click', (e) => {
+    if (e.target.id === 'editModal') {
+        closeEditModal();
+    }
+});
+
+/* ========================================
+   CURRENCY CONVERSION
+   ======================================== */
+
+currencySelect.addEventListener("change", () => {
+    const currency = currencySelect.value;
+
+    priceEls.forEach(el => {
+        const gbp = parseFloat(el.dataset.gbp);
+        let convertedPrice;
+        
+        if (currency === 'GBP') {
+            convertedPrice = gbp;
+        } else {
+            convertedPrice = gbp * EXCHANGE_RATES[currency];
+        }
+        
+        el.textContent = `${CURRENCY_SYMBOLS[currency]}${convertedPrice.toFixed(2)}`;
+    });
+});
+
+/* ========================================
+   ROOM SELECTION
+   ======================================== */
+
+document.querySelectorAll('input[name="selected_room"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.room-table tbody tr').forEach(tr => {
+            tr.style.background = '';
+        });
+        
+        if (this.checked) {
+            this.closest('tr').style.background = 'rgba(59, 130, 246, 0.1)';
+        }
+    });
+});
+
+/* ========================================
+   CONFIRM BOOKING
+   ======================================== */
+
+document.getElementById("confirmBookingBtn").addEventListener("click", () => {
+    const selected = document.querySelector('input[name="selected_room"]:checked');
+    
+    if (!selected) {
+        showCustomAlert("Please select a room first!", "error");
+        return;
+    }
+
+    const roomType = selected.dataset.roomType.toLowerCase();
+    let finalPrice = parseFloat(selected.dataset.gbp);
+
+    /* ===== ROOM RULES ===== */
+
+    // STANDARD ROOM
+    if (roomType.includes("standard") && currentGuests > 1) {
+        showCustomAlert("Standard Room allows only 1 guest", "error");
+        return;
+    }
+
+    // DOUBLE ROOM
+    if (roomType.includes("double")) {
+        if (currentGuests > 2) {
+            showCustomAlert("Double Room allows maximum 2 guests", "error");
+            return;
+        }
+
+        if (currentGuests === 2) {
+            finalPrice += STANDARD_ROOM_PRICE * 0.10;
+            showCustomAlert("2nd guest added.\nExtra 10% of Standard Room price added.", "warning");
+            
+            setTimeout(() => {
+                proceedToBooking(selected, finalPrice);
+            }, 2000);
+            return;
+        }
+    }
+
+    // FAMILY ROOM
+    if (roomType.includes("family") && currentGuests > 4) {
+        showCustomAlert("Family Room allows maximum 4 guests", "error");
+        return;
+    }
+
+    proceedToBooking(selected, finalPrice);
+});
+
+/* ========================================
+   PROCEED TO BILLING
+   ======================================== */
+
+function proceedToBooking(selected, finalPrice) {
+    // Validate booking duration again before proceeding
+    const checkinDate = new Date(currentCheckin);
+    const checkoutDate = new Date(currentCheckout);
+    const daysDiff = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+    
+    if (daysDiff > MAX_BOOKING_DAYS) {
+        showCustomAlert(`Maximum booking duration is ${MAX_BOOKING_DAYS} days`, "error");
+        return;
+    }
+
+    const currency = currencySelect.value;
+    
+    // Convert to selected currency
+    if (currency !== 'GBP') {
+        finalPrice = (finalPrice * EXCHANGE_RATES[currency]).toFixed(2);
+    } else {
+        finalPrice = finalPrice.toFixed(2);
+    }
+
+    const params = new URLSearchParams({
+        room_id: selected.dataset.roomId,
+        room_name: selected.dataset.roomName,
+        hotel_name: selected.dataset.hotelName,
+        price: finalPrice,
+        currency: currency,
+        guests: currentGuests,
+        checkin: currentCheckin,
+        checkout: currentCheckout,
+        fullname: "{{ fullname }}",
+        email: "{{ email }}",
+        location: "{{ location }}",
+        num_days: currentDays
+    });
+
+    window.location.href = "/billing?" + params.toString();
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up date validation for editing
+    const today = new Date().toISOString().split('T')[0];
+    const editCheckinInput = document.getElementById('edit-checkin');
+    if (editCheckinInput) {
+        editCheckinInput.min = today;
+    }
+    
+    // Add rule info to the page
+    console.log('Booking Rules:', BOOKING_RULES);
+});
+</script>
+
+{% endblock %}

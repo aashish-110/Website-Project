@@ -1,0 +1,624 @@
+/**
+ * Hotel Performance Report Stylesheet
+ * Professional reporting interface
+ */
+
+/* ==========================================================================
+   Report Container
+   ========================================================================== */
+
+.report-container {
+  max-width: 87.5rem;
+  margin: 1.875rem auto;
+  margin-top: 140px;
+  padding: 2rem;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+/* ==========================================================================
+   Report Header
+   ========================================================================== */
+
+.report-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 3px solid #2563eb;
+}
+
+.report-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1rem 0;
+}
+
+.report-header p {
+  font-size: 1.125rem;
+  color: #374151;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
+
+.back-button,
+.print-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: transform, background-color, box-shadow;
+}
+
+.back-button {
+  margin-bottom: 1.5rem;
+  background: #4b5563;
+  color: white;
+}
+
+.back-button:hover {
+  background: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.print-button {
+  float: right;
+  background: #10b981;
+  color: white;
+}
+
+.print-button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* ==========================================================================
+   Hotel Selector
+   ========================================================================== */
+
+.hotel-selector {
+  background: #f9fafb;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.hotel-selector form {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hotel-selector label {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.875rem;
+}
+
+.hotel-selector select {
+  padding: 0.625rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  min-width: 18.75rem;
+  background: white;
+  color: #111827;
+  font-weight: 500;
+  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hotel-selector select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.hotel-selector button {
+  padding: 0.625rem 1.5rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, transform, box-shadow;
+}
+
+.hotel-selector button:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.hotel-selector button:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Summary Statistics
+   ========================================================================== */
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #f9fafb 0%, white 100%);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  border: 2px solid #e5e7eb;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  border-color: #2563eb;
+}
+
+.stat-box h3 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.stat-box .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2563eb;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Section Headers
+   ========================================================================== */
+
+.section-heading {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+table th,
+table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+table th {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+table tbody tr {
+  background: white;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+table td {
+  color: #111827;
+  font-size: 0.875rem;
+}
+
+
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  color: #374151;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  margin-top: 2.5rem;
+}
+
+.empty-state p {
+  font-size: 1.125rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .back-button,
+  .print-button,
+  .hotel-selector {
+    display: none !important;
+  }
+  
+  .report-container {
+    box-shadow: none;
+    margin: 0;
+    padding: 1rem;
+  }
+  
+  .stat-box {
+    break-inside: avoid;
+  }
+  
+  table {
+    page-break-inside: avoid;
+  }
+  
+  table thead {
+    display: table-header-group;
+  }
+  
+  table tbody tr {
+    page-break-inside: avoid;
+  }
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+/* Large Tablets & Small Desktops (64rem / 1024px and below) */
+@media (width <= 64rem) {
+  .report-container {
+    max-width: 100%;
+    margin: 1.5rem;
+  }
+  
+  .summary-stats {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+}
+
+/* Tablets (48rem / 768px and below) */
+@media (width <= 48rem) {
+  .report-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .report-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .report-header p {
+    font-size: 1rem;
+  }
+  
+  .back-button,
+  .print-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .print-button {
+    float: none;
+    margin-top: 1rem;
+  }
+  
+  .hotel-selector {
+    padding: 1.5rem;
+  }
+  
+  .hotel-selector form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .hotel-selector select,
+  .hotel-selector button {
+    width: 100%;
+  }
+  
+  .hotel-selector label {
+    width: 100%;
+  }
+  
+  .summary-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .stat-box {
+    padding: 1.5rem;
+  }
+  
+  .stat-box .value {
+    font-size: 1.5rem;
+  }
+  
+  .section-heading {
+    font-size: 1.125rem;
+  }
+  
+  table {
+    font-size: 0.8125rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .analysis-section {
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile Landscape & Small Tablets (37.5rem / 600px and below) */
+@media (width <= 37.5rem) {
+  .report-container {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .report-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .report-header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .back-button,
+  .print-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+  
+  .summary-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-box h3 {
+    font-size: 0.75rem;
+  }
+  
+  .stat-box .value {
+    font-size: 1.25rem;
+  }
+  
+  .section-heading {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* Card-style Tables for Mobile */
+  table,
+  table thead,
+  table tbody,
+  table th,
+  table td,
+  table tr {
+    display: block;
+  }
+  
+  table {
+    box-shadow: none;
+  }
+  
+  table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    opacity: 0;
+  }
+  
+  table tbody tr {
+    margin-bottom: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+  
+  table tbody tr:hover {
+    border-color: #2563eb;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+  
+  table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem;
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: right;
+  }
+  
+  table td:first-child {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  
+  table td:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #111827;
+    text-align: left;
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+}
+
+/* Mobile Portrait (30rem / 480px and below) */
+@media (width <= 30rem) {
+  .report-container {
+    margin: 0.375rem;
+    padding: 0.75rem;
+  }
+  
+  .report-header {
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .report-header h1 {
+    font-size: 1.125rem;
+  }
+  
+  .report-header p {
+    font-size: 0.875rem;
+  }
+  
+  .back-button,
+  .print-button {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+  }
+  
+  .hotel-selector {
+    padding: 1rem;
+  }
+  
+  .hotel-selector label {
+    font-size: 0.8125rem;
+  }
+  
+  .hotel-selector select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    min-width: 100%;
+  }
+  
+  .hotel-selector button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .stat-box {
+    padding: 0.875rem;
+  }
+  
+  .stat-box h3 {
+    font-size: 0.6875rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  .stat-box .value {
+    font-size: 1.125rem;
+  }
+  
+  .section-heading {
+    font-size: 0.9375rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  table td {
+    padding: 0.625rem;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  table td::before {
+    font-size: 0.75rem;
+  }
+  
+  .empty-state {
+    padding: 1.5rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Mobile (23.4375rem / 375px and below) */
+@media (width <= 23.4375rem) {
+  .report-container {
+    margin: 0.25rem;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+  }
+  
+  .report-header h1 {
+    font-size: 1rem;
+  }
+  
+  .back-button,
+  .print-button {
+    font-size: 0.6875rem;
+    padding: 0.4375rem 0.75rem;
+  }
+  
+  .stat-box .value {
+    font-size: 1rem;
+  }
+}

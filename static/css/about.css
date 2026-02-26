@@ -1,0 +1,313 @@
+/* ================= BASE STYLES ================= */
+.about-hero {
+    position: relative;
+    height: 300px;
+    background: url('/static/images/image.jpg') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.about-hero .overlay {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 50px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+}
+
+.about-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-hero p {
+    font-size: 1.1rem;
+}
+
+.about-content {
+    padding: 60px 20px;
+    background-color: #f9f9f9;
+}
+
+.about-content .container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.about-content h2 {
+    margin-top: 30px;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.about-content p, .about-content ul {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.about-content ul {
+    list-style: disc inside;
+    padding-left: 20px;
+}
+
+.team {
+    padding: 60px 20px;
+    background-color: #fff;
+}
+
+.team .container {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+.team h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.team-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.team-cards .card {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.team-cards .card:hover {
+    transform: translateY(-5px);
+}
+
+.team-cards .card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.team-cards .card h3 {
+    margin: 15px 0 5px 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.team-cards .card p {
+    color: #777;
+    font-size: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+    .about-content .container,
+    .team .container {
+        max-width: 95%;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    .about-hero {
+        height: 260px;
+        margin-top: 90px;
+    }
+
+    .about-hero .overlay {
+        padding: 35px 25px;
+    }
+
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+
+    .about-hero p {
+        font-size: 1rem;
+    }
+
+    .about-content .container,
+    .team .container {
+        max-width: 90%;
+    }
+
+    .about-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .about-content p,
+    .about-content ul {
+        font-size: 15px;
+    }
+
+    .team-cards {
+        gap: 25px;
+    }
+
+    .team-cards .card {
+        width: 230px;
+    }
+}
+
+/* Mobile landscape and small tablets */
+@media (max-width: 768px) {
+    .about-hero {
+        height: 220px;
+        margin-top: 80px;
+    }
+
+    .about-hero .overlay {
+        padding: 25px 20px;
+        width: 95%;
+    }
+
+    .about-hero h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .about-hero p {
+        font-size: 0.95rem;
+    }
+
+    .about-content {
+        padding: 40px 15px;
+    }
+
+    .about-content h2 {
+        font-size: 1.4rem;
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .about-content p,
+    .about-content ul {
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .team {
+        padding: 40px 15px;
+    }
+
+    .team h2 {
+        font-size: 1.4rem;
+    }
+
+    .team-cards {
+        gap: 20px;
+    }
+
+    .team-cards .card {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .team-cards .card img {
+        height: 220px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .about-hero {
+        height: 200px;
+        margin-top: 70px;
+    }
+
+    .about-hero .overlay {
+        padding: 20px 15px;
+    }
+
+    .about-hero h1 {
+        font-size: 1.3rem;
+    }
+
+    .about-hero p {
+        font-size: 0.85rem;
+    }
+
+    .about-content {
+        padding: 30px 12px;
+    }
+
+    .about-content h2 {
+        font-size: 1.2rem;
+        margin-top: 20px;
+    }
+
+    .about-content p,
+    .about-content ul {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .about-content ul {
+        padding-left: 15px;
+    }
+
+    .team {
+        padding: 30px 12px;
+    }
+
+    .team h2 {
+        font-size: 1.2rem;
+    }
+
+    .team-cards {
+        gap: 15px;
+    }
+
+    .team-cards .card {
+        padding: 15px;
+    }
+
+    .team-cards .card img {
+        height: 200px;
+    }
+
+    .team-cards .card h3 {
+        font-size: 1rem;
+        margin: 12px 0 4px 0;
+    }
+
+    .team-cards .card p {
+        font-size: 13px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .about-hero {
+        height: 180px;
+    }
+
+    .about-hero h1 {
+        font-size: 1.1rem;
+    }
+
+    .about-hero p {
+        font-size: 0.8rem;
+    }
+
+    .about-content h2 {
+        font-size: 1.1rem;
+    }
+
+    .team-cards .card img {
+        height: 180px;
+    }
+}

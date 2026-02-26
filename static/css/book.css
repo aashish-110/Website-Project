@@ -1,0 +1,538 @@
+/* Booking Wrapper */
+.booking-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated background pattern */
+.booking-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    animation: floating 15s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+/* Header Section */
+.head {
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.head p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Booking Box */
+.booking-box {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    padding: 2.5rem;
+    max-width: 800px;
+    width: 100%;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.booking-box h2 {
+    color: #2d3748;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.booking-box h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+/* Form Styling */
+form {
+    width: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Field Styling */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.field label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #667eea;
+    border-radius: 50%;
+}
+
+/* Input and Select Styling */
+.field input[type="date"],
+.field select {
+    padding: 0.875rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2d3748;
+    background: #f7fafc;
+    transition: all 0.3s ease;
+    outline: none;
+    cursor: pointer;
+}
+
+.field input[type="date"]:hover,
+.field select:hover {
+    border-color: #cbd5e0;
+    background: white;
+}
+
+.field input[type="date"]:focus,
+.field select:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+/* Date input specific styling */
+.field input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: opacity(0.6);
+    transition: filter 0.2s ease;
+}
+
+.field input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    filter: opacity(1);
+}
+
+/* Select dropdown arrow */
+.field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d3748' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+/* Hidden input */
+input[type="hidden"] {
+    display: none;
+}
+
+/* Search Button */
+.search-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.search-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+.rules-info {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #667eea;
+}
+
+.rules-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.rules-info strong {
+    color: #2c3e50;
+}
+
+.search-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+/* Button icon effect */
+.search-btn::after {
+    content: '🔍';
+    margin-left: 0.5rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.search-btn:hover::after {
+    transform: scale(1.2) rotate(15deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-wrapper {
+        padding: 1.5rem 1rem;
+    }
+
+    .head p {
+        font-size: 1.8rem;
+    }
+
+    .booking-box {
+        padding: 1.5rem;
+    }
+
+    .booking-box h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .field input[type="date"],
+    .field select {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .search-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+    .head p {
+        font-size: 1.5rem;
+    }
+
+    .booking-box {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+
+    .booking-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .field label {
+        font-size: 0.9rem;
+    }
+
+    .field input[type="date"],
+    .field select {
+        padding: 0.65rem 0.875rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .field:last-of-type {
+        grid-column: span 2;
+    }
+}
+
+/* Input validation states */
+.field input:invalid {
+    border-color: #fc8181;
+}
+
+.field input:valid {
+    border-color: #68d391;
+}
+
+/* Focus visible for accessibility */
+.search-btn:focus-visible {
+    outline: 3px solid #764ba2;
+    outline-offset: 2px;
+}
+
+.field input:focus-visible,
+.field select:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Loading state (optional) */
+.search-btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.search-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Custom scrollbar for select dropdown */
+select::-webkit-scrollbar {
+    width: 8px;
+}
+
+select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+select::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 10px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
+
+/* Placeholder styling for inputs */
+.field input::placeholder,
+.field select::placeholder {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* Success animation after form submission (optional) */
+@keyframes successPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.booking-box.success {
+    animation: successPulse 0.6s ease;
+}
+
+/* Print styles */
+@media print {
+    .booking-wrapper {
+        background: white;
+    }
+
+    .booking-wrapper::before {
+        display: none;
+    }
+
+    .head p {
+        color: #2d3748;
+        text-shadow: none;
+    }
+
+    .booking-box {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+    }
+
+    .search-btn {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .field input[type="date"],
+    .field select {
+        border-width: 3px;
+    }
+
+    .search-btn {
+        border: 2px solid white;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    /* You can add dark mode styles here if needed */
+}
+
+/* Selection styling */
+::selection {
+    background: #667eea;
+    color: white;
+}
+
+::-moz-selection {
+    background: #667eea;
+    color: white;
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Additional decorative elements */
+.booking-box::before {
+    content: '✈️';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-size: 2rem;
+    opacity: 0.2;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Error message styling (if you add error messages later) */
+.error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+.field.error .error-message {
+    display: block;
+}
+
+.field.error input,
+.field.error select {
+    border-color: #fc8181;
+    background: #fff5f5;
+}
+
+/* Success message styling */
+.success-message {
+    color: #38a169;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+.field.success .success-message {
+    display: block;
+}

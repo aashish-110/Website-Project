@@ -1,0 +1,568 @@
+/* ================= BASE STYLES ================= */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+main {
+    flex: 1;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    margin-top: -20px;
+    height: 130px;
+    background-color: rgba(150, 150, 150, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo img{
+    margin-top: 40px;
+    margin-left: -30px;
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+}
+
+.text{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.text a{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    padding: 12px 20px;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.text a:hover{
+    color: rgb(62, 184, 225);
+    background-color: rgb(88, 80, 26);
+    transform: translateY(-3px);
+}
+
+.nav-item{
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 120%;
+    left: 0;
+    background: white;
+    min-width: 180px;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 18px;
+    color: #333;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-item:hover .dropdown-menu{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Mobile Menu Toggle (hidden on desktop) */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* ================= SIGN IN ================= */
+.signin{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn{
+    padding: 10px 22px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.login{
+    border: 2px solid #333;
+    color: #333;
+}
+
+.login:hover{
+    background: #333;
+    color: white;
+}
+
+.signup{
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+}
+
+.signup:hover{
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    transform: translateY(-3px);
+}
+
+.profile-pic {
+    width: 50px;    
+    height: 50px;   
+    margin-top: 12px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #fff; 
+    transition: transform 0.2s;
+    cursor: pointer;  
+}
+
+.profile-pic:hover {
+    transform: scale(1.1);
+}
+
+/* ================= FOOTER ================= */
+.footer{
+    background: gray;
+    color: white;
+    padding: 50px 20px;
+}
+
+.footer-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    max-width: 1360px;
+    margin: auto;
+}
+
+.hotel-name{
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.thanks{
+    color: #ffe066;
+    margin: 10px 0;
+}
+
+.description{
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.footer-links h3{
+    margin-bottom: 15px;
+}
+
+.footer-links a{
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover{
+    color: yellow;
+    font-weight: 600;
+}
+
+.social-media h3{
+    margin-bottom: 10px;
+}
+
+.social-icons{
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icons a{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    text-decoration: none;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover{
+    background: #ffe066;
+    color: #2575fc;
+    transform: scale(1.1);
+}
+
+.footer-bottom{
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Large tablets and laptops */
+@media (max-width: 1200px) {
+    .navbar {
+        padding: 15px 30px;
+    }
+
+    .text {
+        gap: 20px;
+    }
+
+    .text a {
+        font-size: 18px;
+        padding: 10px 16px;
+    }
+
+    .dropdown-menu {
+        min-width: 160px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 15px 20px;
+        height: 110px;
+    }
+
+    .logo img {
+        width: 150px;
+        margin-left: -15px;
+        margin-top: 30px;
+    }
+
+    .text {
+        gap: 15px;
+    }
+
+    .text a {
+        font-size: 16px;
+        padding: 10px 14px;
+    }
+
+    .dropdown-menu {
+        min-width: 150px;
+        max-height: 250px;
+    }
+
+    .btn {
+        padding: 9px 18px;
+        font-size: 14px;
+    }
+
+    .profile-pic {
+        width: 45px;
+        height: 45px;
+    }
+
+    .footer-container {
+        gap: 30px;
+    }
+
+    .hotel-name {
+        font-size: 32px;
+    }
+}
+
+/* Mobile landscape and small tablets */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px;
+        height: auto;
+        margin-top: 0;
+    }
+
+    .logo img {
+        width: 120px;
+        margin-top: 5px;
+        margin-left: 0;
+    }
+
+    /* Hide desktop menu */
+    .text {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: rgba(150, 150, 150, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
+    }
+
+    .text.active {
+        display: flex;
+    }
+
+    .text a {
+        padding: 12px 15px;
+        font-size: 16px;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .text a:hover {
+        background-color: rgba(88, 80, 26, 0.3);
+        transform: none;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    /* Mobile dropdown - always visible when menu is open */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        max-height: 250px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .dropdown-menu a {
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Show mobile menu toggle */
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .signin {
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        margin-top: 0;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 40px 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .hotel-name {
+        font-size: 28px;
+    }
+
+    .footer-links a {
+        margin-bottom: 8px;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 10px;
+    }
+
+    .logo img {
+        width: 100px;
+    }
+
+    .text {
+        top: 60px;
+        padding: 15px;
+    }
+
+    .text a {
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+
+    .dropdown-menu a {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+
+    .mobile-menu-toggle span {
+        width: 22px;
+        height: 2.5px;
+    }
+
+    .signin {
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 7px 14px;
+        font-size: 12px;
+    }
+
+    .profile-pic {
+        width: 35px;
+        height: 35px;
+    }
+
+    .hotel-name {
+        font-size: 24px;
+    }
+
+    .thanks {
+        font-size: 14px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .social-icons a {
+        width: 40px;
+        height: 40px;
+    }
+
+    .footer-bottom {
+        font-size: 12px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .logo img {
+        width: 90px;
+    }
+
+    .text a {
+        font-size: 14px;
+        padding: 9px 10px;
+    }
+
+    .dropdown-menu a {
+        font-size: 12px;
+        padding: 7px 12px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .profile-pic {
+        width: 32px;
+        height: 32px;
+    }
+
+    .hotel-name {
+        font-size: 22px;
+    }
+
+    .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+/* Hover effects only on devices that support hover */
+@media (hover: hover) {
+    .text a:hover,
+    .signup:hover {
+        transform: translateY(-3px);
+    }
+}

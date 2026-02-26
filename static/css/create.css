@@ -1,0 +1,383 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Create account wrapper - centers the form box */
+.create-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: calc(100vh - 80px);
+}
+
+/* Create account box */
+.create-box {
+    margin-top: 100px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Heading */
+.create-box h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Input group */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 2px;
+}
+
+.input-group input {
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #fafafa;
+}
+
+.input-group input:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.input-group input::placeholder {
+    color: #aaa;
+}
+
+/* Password strength indicator (optional enhancement) */
+.input-group input[type="password"]:focus {
+    border-color: #667eea;
+}
+
+/* Create account button */
+.create-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.create-btn:active {
+    transform: translateY(0);
+}
+
+/* Error messages (if you add them later) */
+.error {
+    background: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #fcc;
+}
+
+.success {
+    background: #efe;
+    color: #3c3;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #cfc;
+}
+
+/* Already have account link (optional) */
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+.privacy-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #4b5563;
+    flex-wrap: wrap; /* Wrap text on small screens */
+}
+
+/* Custom checkbox styling */
+.privacy-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 5px;
+    accent-color: #3b82f6; /* Modern blue */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.privacy-group input[type="checkbox"]:hover {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Label styling */
+.privacy-group label {
+    display: flex;
+    flex-wrap: wrap; /* Allows links to wrap on small screens */
+    gap: 4px;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+/* Links inside label */
+.privacy-group label a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.privacy-group label a:hover {
+    text-decoration: underline;
+    color: #2563eb;
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .create-wrapper {
+        padding: 30px 20px;
+    }
+
+    .create-box {
+        padding: 30px 25px;
+        max-width: 450px;
+    }
+
+    .create-box h2 {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+
+    .input-group input {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .create-btn {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    form {
+        gap: 18px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .create-wrapper {
+        padding: 20px 15px;
+        min-height: 100vh;
+    }
+
+    .create-box {
+        padding: 25px 20px;
+        border-radius: 10px;
+    }
+
+    .create-box h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    form {
+        gap: 16px;
+    }
+
+    .input-group {
+        gap: 6px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+    }
+
+    .input-group input {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .create-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .error,
+    .success {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .login-link {
+        font-size: 13px;
+        margin-top: 15px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 360px) {
+    .create-box {
+        padding: 20px 15px;
+    }
+
+    .create-box h2 {
+        font-size: 20px;
+    }
+
+    form {
+        gap: 14px;
+    }
+
+    .input-group input {
+        padding: 10px 12px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 650px) and (orientation: landscape) {
+    .create-wrapper {
+        padding: 15px 10px;
+    }
+
+    .create-box {
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    .create-box h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    form {
+        gap: 12px;
+    }
+
+    .input-group {
+        gap: 5px;
+    }
+
+    .input-group input {
+        padding: 10px 12px;
+    }
+
+    .create-btn {
+        padding: 10px;
+        margin-top: 5px;
+    }
+}
+
+/* Extra styles for form validation feedback */
+.input-group input:invalid:not(:placeholder-shown) {
+    border-color: #ff6b6b;
+}
+
+.input-group input:valid:not(:placeholder-shown) {
+    border-color: #51cf66;
+}
+
+/* Focus visible for accessibility */
+.create-btn:focus-visible,
+.input-group input:focus-visible {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling for long forms */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading state (optional enhancement) */
+.create-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.create-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}

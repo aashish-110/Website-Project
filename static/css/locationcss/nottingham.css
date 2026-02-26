@@ -1,0 +1,505 @@
+/* ================= BASE STYLES ================= */
+.rooms-section {
+    padding: 80px 10%;
+    background: linear-gradient(to right, #f8f8f8, #ffffff);
+    text-align: center;
+    margin-top: 140px;
+}
+
+.section-title {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #1b1b1b;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 60px;
+}
+
+.rooms-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+}
+
+.room-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.room-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* Availability Badge */
+.availability-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.availability-badge.available {
+    background: #10b981;
+    color: white;
+}
+
+.availability-badge.unavailable {
+    background: #ef4444;
+    color: white;
+}
+
+.availability-badge i {
+    font-size: 14px;
+}
+
+.room-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.room-card h2 {
+    font-size: 26px;
+    margin: 20px 0 10px;
+    color: #111;
+}
+
+.room-desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.room-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 20px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    font-size: 14px;
+    color: #444;
+    flex-wrap: wrap;
+}
+
+.room-features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.room-features i {
+    color: #c89b3c;
+    font-size: 14px;
+}
+
+/* Rooms Available Count */
+.rooms-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 20px 15px;
+    padding: 10px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #0369a1;
+    font-weight: 600;
+}
+
+.rooms-count i {
+    font-size: 16px;
+    color: #0284c7;
+}
+
+.room-price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #c89b3c;
+    margin-bottom: 20px;
+}
+
+.book-btn {
+    display: inline-block;
+    margin-bottom: 30px;
+    padding: 12px 30px;
+    background: #111;
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.book-btn:hover {
+    background: #c89b3c;
+    transform: translateY(-2px);
+}
+
+.book-btn.disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.book-btn.disabled:hover {
+    background: #9ca3af;
+    transform: none;
+}
+
+.peak-info {
+    display: block;
+    color: #ff6b6b;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.regular-price {
+    font-weight: bold;
+    color: #2575fc;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Large tablets and laptops */
+@media (max-width: 1200px) {
+    .rooms-section {
+        padding: 70px 8%;
+    }
+
+    .section-title {
+        font-size: 38px;
+    }
+
+    .rooms-container {
+        gap: 30px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    .rooms-section {
+        padding: 60px 6%;
+        margin-top: 120px;
+    }
+
+    .section-title {
+        font-size: 34px;
+        margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+        font-size: 15px;
+        margin-bottom: 50px;
+    }
+
+    .rooms-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 28px;
+    }
+
+    .availability-badge {
+        top: 12px;
+        right: 12px;
+        padding: 7px 14px;
+        font-size: 12px;
+    }
+
+    .room-card h2 {
+        font-size: 24px;
+        margin: 18px 0 8px;
+    }
+
+    .room-card img {
+        height: 200px;
+    }
+
+    .room-desc {
+        font-size: 14.5px;
+        padding: 0 18px;
+        margin-bottom: 18px;
+    }
+
+    .room-features {
+        gap: 20px;
+        font-size: 13.5px;
+    }
+
+    .rooms-count {
+        font-size: 13px;
+        margin: 0 18px 14px;
+        padding: 9px;
+    }
+
+    .rooms-count i {
+        font-size: 15px;
+    }
+
+    .room-price {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .book-btn {
+        padding: 11px 28px;
+        font-size: 14.5px;
+        margin-bottom: 28px;
+    }
+}
+
+/* Mobile landscape and small tablets */
+@media (max-width: 768px) {
+    .rooms-section {
+        padding: 50px 5%;
+        margin-top: 100px;
+    }
+
+    .section-title {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+
+    .rooms-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .room-card {
+        border-radius: 16px;
+    }
+
+    .availability-badge {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        font-size: 11px;
+        gap: 5px;
+    }
+
+    .availability-badge i {
+        font-size: 12px;
+    }
+
+    .room-card h2 {
+        font-size: 22px;
+        margin: 16px 0 8px;
+    }
+
+    .room-card img {
+        height: 180px;
+    }
+
+    .room-desc {
+        font-size: 14px;
+        padding: 0 16px;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    .room-features {
+        gap: 15px;
+        margin: 0 16px 18px;
+        font-size: 13px;
+    }
+
+    .room-features i {
+        font-size: 13px;
+    }
+
+    .rooms-count {
+        font-size: 12.5px;
+        margin: 0 16px 13px;
+        padding: 8px;
+    }
+
+    .rooms-count i {
+        font-size: 14px;
+    }
+
+    .room-price {
+        font-size: 19px;
+        margin-bottom: 16px;
+    }
+
+    .book-btn {
+        padding: 10px 26px;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .rooms-section {
+        padding: 40px 4%;
+        margin-top: 80px;
+    }
+
+    .section-title {
+        font-size: 26px;
+        margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+        font-size: 13px;
+        margin-bottom: 35px;
+    }
+
+    .rooms-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .room-card {
+        border-radius: 14px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .availability-badge {
+        top: 8px;
+        right: 8px;
+        padding: 5px 10px;
+        font-size: 10px;
+        gap: 4px;
+    }
+
+    .availability-badge i {
+        font-size: 11px;
+    }
+
+    .room-card h2 {
+        font-size: 20px;
+        margin: 14px 0 6px;
+    }
+
+    .room-card img {
+        height: 170px;
+    }
+
+    .room-desc {
+        font-size: 13px;
+        padding: 0 14px;
+        margin-bottom: 14px;
+    }
+
+    .room-features {
+        gap: 12px;
+        margin: 0 14px 16px;
+        font-size: 12px;
+    }
+
+    .room-features i {
+        font-size: 12px;
+    }
+
+    .rooms-count {
+        font-size: 11.5px;
+        margin: 0 14px 12px;
+        padding: 7px;
+    }
+
+    .rooms-count i {
+        font-size: 13px;
+    }
+
+    .room-price {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .book-btn {
+        padding: 9px 24px;
+        font-size: 13px;
+        margin-bottom: 22px;
+        border-radius: 25px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .rooms-section {
+        padding: 35px 3%;
+        margin-top: 70px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .section-subtitle {
+        font-size: 12px;
+        margin-bottom: 30px;
+    }
+
+    .rooms-container {
+        gap: 18px;
+    }
+
+    .availability-badge {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .room-card h2 {
+        font-size: 18px;
+    }
+
+    .room-card img {
+        height: 160px;
+    }
+
+    .room-desc {
+        font-size: 12px;
+        padding: 0 12px;
+    }
+
+    .room-features {
+        gap: 10px;
+        font-size: 11px;
+    }
+
+    .rooms-count {
+        font-size: 11px;
+        padding: 6px;
+    }
+
+    .room-price {
+        font-size: 17px;
+    }
+
+    .book-btn {
+        padding: 8px 22px;
+        font-size: 12px;
+    }
+}

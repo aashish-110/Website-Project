@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/about.css">
+{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <div class="overlay">
+        <h1>About World Hotel</h1>
+        <p>Experience luxury, comfort, and world-class service</p>
+    </div>
+</section>
+
+<section class="about-content">
+    <div class="container">
+        <h2>Our Story</h2>
+        <p>
+            Founded in 2020, World Hotel has been dedicated to providing travelers 
+            with an unforgettable experience. From cozy rooms to luxurious suites, 
+            we strive to make every stay comfortable, memorable, and unique.
+        </p>
+
+        <h2>Our Mission</h2>
+        <p>
+            Our mission is simple: to provide top-notch hospitality and service, 
+            ensuring that every guest feels valued and at home, whether for business 
+            or leisure.
+        </p>
+
+        <h2>Our Values</h2>
+        <ul>
+            <li>Excellence in service</li>
+            <li>Comfort and cleanliness</li>
+            <li>Customer satisfaction</li>
+            <li>Innovation in hospitality</li>
+            <li>Commitment to sustainability</li>
+        </ul>
+
+        <h2>Why Choose Us?</h2>
+        <p>
+            World Hotel offers a perfect blend of luxury and convenience. 
+            With prime locations, modern amenities, and attentive staff, 
+            we ensure your stay is hassle-free and unforgettable.
+        </p>
+    </div>
+</section>
+
+<section class="team">
+    <div class="container">
+        <h2>Meet Our Team</h2>
+        <div class="team-cards">
+            <div class="card">
+                <img src="/static/images/ceo.png" alt="CEO">
+                <h3>Aashish Thakur</h3>
+                <p>CEO & Founder</p>
+            </div>
+            <div class="card">
+                <img src="/static/images/manager.png" alt="Manager">
+                <h3>Razen Yadav</h3>
+                <p>Hotel Manager</p>
+            </div>
+            <div class="card">
+                <img src="/static/images/head.png" alt="Head Chef">
+                <h3>Suraj Mehta</h3>
+                <p>Head Chef</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

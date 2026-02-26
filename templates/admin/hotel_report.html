@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Hotel Performance Report{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/hotel_report.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <a href="{{ url_for('admin_dashboard') }}" class="back-button">← Back to Dashboard</a>
+    <button onclick="window.print()" class="print-button">🖨️ Print Report</button>
+    
+    <div class="report-header">
+        <h1>🏨 Hotel Performance Report</h1>
+        {% if hotel_summary %}
+        <p>{{ hotel_summary.hotel_name }} - {{ hotel_summary.location }}</p>
+        {% else %}
+        <p>Comprehensive Analysis of All Hotels</p>
+        {% endif %}
+    </div>
+
+    <!-- Hotel Selector -->
+    <div class="hotel-selector">
+        <form method="GET" action="{{ url_for('hotel_report') }}">
+            <label for="hotel_id"><strong>Select Hotel:</strong></label>
+            <select name="hotel_id" id="hotel_id">
+                <option value="">-- All Hotels --</option>
+                {% for hotel in all_hotels %}
+                <option value="{{ hotel.hotel_id }}" {% if selected_hotel_id == hotel.hotel_id %}selected{% endif %}>
+                    {{ hotel.hotel_name }} - {{ hotel.location }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit">View Report</button>
+        </form>
+    </div>
+
+    {% if hotel_summary %}
+        <!-- Single Hotel Detailed Report -->
+        <div class="summary-stats">
+            <div class="stat-box">
+                <h3>Total Bookings</h3>
+                <div class="value">{{ hotel_summary.total_bookings }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Revenue</h3>
+                <div class="value">£{{ "%.2f"|format(hotel_summary.total_revenue | float) }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Avg Booking Value</h3>
+                <div class="value">£{{ "%.2f"|format(hotel_summary.avg_booking_value | float) }}</div>
+            </div>
+        </div>
+
+        <!-- Room Type Breakdown -->
+        {% if room_breakdown %}
+        <h3 class="section-heading">🛏️ Revenue by Room Type</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Room Type</th>
+                    <th>Price per Night</th>
+                    <th>Total Bookings</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in room_breakdown %}
+                <tr>
+                    <td data-label="Room Type">{{ room.room_name }}</td>
+                    <td data-label="Price per Night">£{{ "%.2f"|format(room.price | float) }}</td>
+                    <td data-label="Total Bookings">{{ room.bookings if room.bookings else 0 }}</td>
+                    <td data-label="Total Revenue">£{{ "%.2f"|format(room.revenue | float if room.revenue else 0) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- Monthly Breakdown -->
+        {% if monthly_breakdown %}
+        <h3 class="section-heading">📅 Monthly Performance (Last 12 Months)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Bookings</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month in monthly_breakdown %}
+                <tr>
+                    <td data-label="Month">{{ month.month_name }}</td>
+                    <td data-label="Bookings">{{ month.bookings }}</td>
+                    <td data-label="Revenue">£{{ "%.2f"|format(month.revenue | float) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    {% elif hotel_data %}
+        {% set total_bookings = hotel_data | sum(attribute='total_bookings') %}
+        {% set total_revenue_raw = hotel_data | sum(attribute='total_revenue') %}
+        {% set total_revenue = total_revenue_raw | float %}
+        {% set total_hotels = hotel_data | length %}
+        {% set avg_revenue_per_hotel = (total_revenue / total_hotels) if total_hotels > 0 else 0 %}
+        
+        <div class="summary-stats">
+            <div class="stat-box">
+                <h3>Total Hotels</h3>
+                <div class="value">{{ total_hotels }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Bookings</h3>
+                <div class="value">{{ total_bookings }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Revenue</h3>
+                <div class="value">£{{ "%.2f"|format(total_revenue) }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Avg Revenue/Hotel</h3>
+                <div class="value">£{{ "%.2f"|format(avg_revenue_per_hotel) }}</div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Hotel Name</th>
+                    <th>Location</th>
+                    <th>Total Bookings</th>
+                    <th>Total Revenue</th>
+                    <th>Avg Booking Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hotel in hotel_data %}
+                <tr>
+                    <td data-label="Rank">{{ loop.index }}</td>
+                    <td data-label="Hotel Name"><strong>{{ hotel.hotel_name }}</strong></td>
+                    <td data-label="Location">{{ hotel.location }}</td>
+                    <td data-label="Total Bookings">{{ hotel.total_bookings if hotel.total_bookings else 0 }}</td>
+                    <td data-label="Total Revenue">£{{ "%.2f"|format(hotel.total_revenue if hotel.total_revenue else 0) }}</td>
+                    <td data-label="Avg Booking Value">£{{ "%.2f"|format(hotel.avg_booking_value if hotel.avg_booking_value else 0) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="empty-state">
+            <p>No hotel performance data available yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

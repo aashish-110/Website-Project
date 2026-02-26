@@ -1,0 +1,775 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+<style>
+    .exchange-rate-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .currency-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .currency-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    
+    .currency-item:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+    
+    .currency-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .currency-name {
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 1.1em;
+    }
+    
+    .currency-symbol {
+        font-size: 1.5em;
+        color: #3b82f6;
+    }
+    
+    .rate-input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .rate-input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+    
+    .rate-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .base-currency-info {
+        background: #e3f2fd;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        border-left: 4px solid #2196f3;
+    }
+    
+    .update-btn {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: all 0.3s;
+    }
+    
+    .update-btn:hover {
+        background: #059669;
+        transform: scale(1.05);
+    }
+    
+    .update-all-btn {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: all 0.3s;
+    }
+    
+    .update-all-btn:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .last-updated {
+        color: #6b7280;
+        font-size: 0.85em;
+        font-style: italic;
+        margin-top: 5px;
+    }
+    
+    .success-message {
+        background: #d1fae5;
+        color: #065f46;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        border-left: 4px solid #10b981;
+        display: none;
+    }
+    
+    .error-message {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        border-left: 4px solid #ef4444;
+        display: none;
+    }
+
+    /* Collapsible Settings Styles */
+    .settings-header {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-bottom: 0;
+    }
+
+    .settings-header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .settings-header h2 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .toggle-icon {
+        font-size: 24px;
+        transition: transform 0.3s ease;
+    }
+
+    .toggle-icon.open {
+        transform: rotate(180deg);
+    }
+
+    .settings-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+        background: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .settings-content.open {
+        max-height: 3000px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+    }
+
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Booking Rules Styles */
+    .booking-rules-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .rules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .rule-item {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .rule-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .rule-icon {
+        font-size: 24px;
+    }
+
+    .rule-input-group {
+        margin-bottom: 15px;
+    }
+
+    .rule-input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 600;
+    }
+
+    .rule-input-group input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+
+    .rule-input-group input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .rule-description {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-content">
+        
+        <!-- Header Section -->
+        <div class="dashboard-header">
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <img src="{{ url_for('static', filename=profile.profile_picture if profile and profile.profile_picture else 'images/default.jpg') }}" 
+                         alt="Profile Picture">
+                </div>
+                <div class="profile-info">
+                    <h1>Welcome, {{ session['username'] }}!</h1>
+                    <div class="user-meta">
+                        <span class="username"><i class="icon">👤</i> {{ session['username'] }}</span>
+                        <span class="role-badge">{{ session['role'] }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('admin_my_bookings') }}" class="btn btn-info">
+                    <span class="btn-icon">🎫</span> My Bookings
+                </a>
+                <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">
+                    <span class="btn-icon">✏️</span> Edit Profile
+                </a>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">
+                    <span class="btn-icon">🚪</span> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <section class="reports-section">
+            <h2 class="section-title">📈 Reports</h2>
+            <div class="report-cards">
+                <a href="{{ url_for('monthly_report') }}" class="report-card">
+                    <div class="report-icon">📅</div>
+                    <h3>Monthly Sales Report</h3>
+                    <p>View detailed monthly revenue and booking statistics</p>
+                </a>
+                <a href="{{ url_for('hotel_report') }}" class="report-card">
+                    <div class="report-icon">🏨</div>
+                    <h3>Hotel Performance</h3>
+                    <p>Analyze hotel-wise performance metrics</p>
+                </a>
+                <a href="{{ url_for('customer_report') }}" class="report-card">
+                    <div class="report-icon">👥</div>
+                    <h3>Customer Analysis</h3>
+                    <p>Track customer behavior and trends</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Booking Management Section -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title">📋 Booking Management</h2>
+                <div style="display: flex; gap: 10px;">
+                    <a href="{{ url_for('admin_all_bookings') }}" class="btn btn-info">
+                        <span class="btn-icon">📊</span> View All Bookings
+                    </a>
+                    <a href="{{ url_for('cancellation_history') }}" class="btn btn-danger">
+                        <span class="btn-icon">🗑️</span> Cancellation History
+                    </a>
+                </div>
+            </div>
+            <p class="section-meta">Manage all hotel bookings from this section</p>
+        </section>
+
+        <!-- User Management -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title">👥 User Management</h2>
+                <a href="{{ url_for('add_user') }}" class="btn btn-success">
+                    <span class="btn-icon">➕</span> Add New User
+                </a>
+            </div>
+            <p class="section-meta">Total Users: <strong>{{ total_users }}</strong></p>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td data-label="ID">{{ u.id }}</td>
+                            <td data-label="Username">{{ u.username }}</td>
+                            <td data-label="Email">{{ u.email }}</td>
+                            <td data-label="Role"><span class="badge">{{ u.role }}</span></td>
+                            <td data-label="Status"><span class="badge badge-status">{{ u.status }}</span></td>
+                            <td data-label="Actions">
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('edit_user', id=u.id) }}" class="btn-action btn-edit">Edit</a>
+                                    <a href="{{ url_for('delete_user', id=u.id) }}" class="btn-action btn-delete"
+                                    onclick="return confirm('Delete {{ u.role }}?')">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Hotel Management -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title">🏨 Hotel Management</h2>
+                <a href="{{ url_for('add_hotel') }}" class="btn btn-success">
+                    <span class="btn-icon">➕</span> Add Hotel
+                </a>
+            </div>
+            <p class="section-meta">Total Hotels: <strong>{{ total_hotels }}</strong></p>
+
+            {% if hotels %}
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hotel Name</th>
+                            <th>Location</th>
+                            <th>Room Types</th>
+                            <th>Total Rooms</th>
+                            <th>Price Range</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hotel in hotels %}
+                        <tr>
+                            <td data-label="ID">{{ hotel.hotel_id }}</td>
+                            <td data-label="Hotel Name"><strong>{{ hotel.hotel_name }}</strong></td>
+                            <td data-label="Location">{{ hotel.location }}</td>
+                            <td data-label="Room Types">{{ hotel.total_rooms if hotel.total_rooms else 0 }}</td>
+                            <td data-label="Total Rooms">{{ hotel.total_room_count if hotel.total_room_count else 0 }}</td>
+                            <td data-label="Price Range">
+                                {% if hotel.min_price %}
+                                    £{{ hotel.min_price }} - £{{ hotel.max_price }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td data-label="Actions">
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('view_hotel_rooms', hotel_id=hotel.hotel_id) }}" 
+                                       class="btn-action btn-view">View</a>
+                                    <a href="{{ url_for('edit_hotel', hotel_id=hotel.hotel_id) }}" 
+                                       class="btn-action btn-edit">Edit</a>
+                                    <a href="{{ url_for('delete_hotel', hotel_id=hotel.hotel_id) }}" 
+                                       class="btn-action btn-delete"
+                                       onclick="return confirm('Delete this hotel and all its rooms?')">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">🏨</div>
+                <p>No hotels found. Add your first hotel!</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Settings Section (Collapsible) -->
+        <section class="management-section">
+            <div class="settings-header" onclick="toggleSettings()">
+                <h2><span>⚙️</span> Settings</h2>
+                <span class="toggle-icon" id="toggleIcon">▼</span>
+            </div>
+            
+            <div class="settings-content" id="settingsContent">
+                <div class="settings-grid">
+                    
+                    <!-- Exchange Rate Management -->
+                    <div class="exchange-rate-card">
+                        <h3 style="margin-top: 0; color: #2c3e50;">💱 Exchange Rate Management</h3>
+                        
+                        <div id="successMessage" class="success-message"></div>
+                        <div id="errorMessage" class="error-message"></div>
+                        
+                        <div class="base-currency-info">
+                            <strong>Base Currency:</strong> GBP (British Pound) - All rates are relative to 1 GBP
+                        </div>
+                        
+                        <div class="currency-grid">
+                            <div class="currency-item">
+                                <div class="currency-header">
+                                    <span class="currency-name">USD - US Dollar</span>
+                                    <span class="currency-symbol">$</span>
+                                </div>
+                                <div class="rate-input-group">
+                                    <input type="number" 
+                                           step="0.01" 
+                                           min="0.01" 
+                                           class="rate-input" 
+                                           id="rate-USD" 
+                                           value="{{ exchange_rates.USD.rate if exchange_rates and exchange_rates.USD else 1.27 }}">
+                                    <button class="update-btn" onclick="updateSingleRate('USD')">Update</button>
+                                </div>
+                                <div class="last-updated" id="updated-USD">
+                                    {% if exchange_rates and exchange_rates.USD %}
+                                        Updated: {{ exchange_rates.USD.updated_at }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="currency-item">
+                                <div class="currency-header">
+                                    <span class="currency-name">NPR - Nepali Rupee</span>
+                                    <span class="currency-symbol">₨</span>
+                                </div>
+                                <div class="rate-input-group">
+                                    <input type="number" 
+                                           step="0.01" 
+                                           min="0.01" 
+                                           class="rate-input" 
+                                           id="rate-NPR" 
+                                           value="{{ exchange_rates.NPR.rate if exchange_rates and exchange_rates.NPR else 171.50 }}">
+                                    <button class="update-btn" onclick="updateSingleRate('NPR')">Update</button>
+                                </div>
+                                <div class="last-updated" id="updated-NPR">
+                                    {% if exchange_rates and exchange_rates.NPR %}
+                                        Updated: {{ exchange_rates.NPR.updated_at }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="currency-item">
+                                <div class="currency-header">
+                                    <span class="currency-name">AUD - Australian Dollar</span>
+                                    <span class="currency-symbol">$</span>
+                                </div>
+                                <div class="rate-input-group">
+                                    <input type="number" 
+                                           step="0.01" 
+                                           min="0.01" 
+                                           class="rate-input" 
+                                           id="rate-AUD" 
+                                           value="{{ exchange_rates.AUD.rate if exchange_rates and exchange_rates.AUD else 1.93 }}">
+                                    <button class="update-btn" onclick="updateSingleRate('AUD')">Update</button>
+                                </div>
+                                <div class="last-updated" id="updated-AUD">
+                                    {% if exchange_rates and exchange_rates.AUD %}
+                                        Updated: {{ exchange_rates.AUD.updated_at }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="currency-item">
+                                <div class="currency-header">
+                                    <span class="currency-name">INR - Indian Rupee</span>
+                                    <span class="currency-symbol">₹</span>
+                                </div>
+                                <div class="rate-input-group">
+                                    <input type="number" 
+                                           step="0.01" 
+                                           min="0.01" 
+                                           class="rate-input" 
+                                           id="rate-INR" 
+                                           value="{{ exchange_rates.INR.rate if exchange_rates and exchange_rates.INR else 106.50 }}">
+                                    <button class="update-btn" onclick="updateSingleRate('INR')">Update</button>
+                                </div>
+                                <div class="last-updated" id="updated-INR">
+                                    {% if exchange_rates and exchange_rates.INR %}
+                                        Updated: {{ exchange_rates.INR.updated_at }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="update-all-btn" onclick="updateAllRates()">
+                            Save All Exchange Rates
+                        </button>
+                    </div>
+
+                    <!-- Booking Rules Management -->
+                    <div class="booking-rules-card">
+                        <h3 style="margin-top: 0; color: #2c3e50;">📅 Booking Rules Management</h3>
+                        
+                        <div id="rulesSuccessMessage" class="success-message"></div>
+                        <div id="rulesErrorMessage" class="error-message"></div>
+                        
+                        <div class="rules-grid">
+                            <div class="rule-item">
+                                <div class="rule-header">
+                                    <span class="rule-icon">🗓️</span>
+                                    <span>Maximum Booking Duration</span>
+                                </div>
+                                <div class="rule-input-group">
+                                    <label for="max-booking-days">Maximum Days</label>
+                                    <input type="number" 
+                                           id="max-booking-days" 
+                                           min="1" 
+                                           max="365" 
+                                           value="{{ booking_rules.max_booking_days if booking_rules else 30 }}">
+                                    <div class="rule-description">Maximum number of days a customer can book at once</div>
+                                </div>
+                            </div>
+                            
+                            <div class="rule-item">
+                                <div class="rule-header">
+                                    <span class="rule-icon">📆</span>
+                                    <span>Advance Booking Limit</span>
+                                </div>
+                                <div class="rule-input-group">
+                                    <label for="max-advance-days">Maximum Advance Days</label>
+                                    <input type="number" 
+                                           id="max-advance-days" 
+                                           min="1" 
+                                           max="730" 
+                                           value="{{ booking_rules.max_advance_days if booking_rules else 90 }}">
+                                    <div class="rule-description">How far in advance customers can book (in days)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="update-all-btn" onclick="updateBookingRules()">
+                            Save Booking Rules
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    // Toggle Settings Section
+    function toggleSettings() {
+        const content = document.getElementById('settingsContent');
+        const icon = document.getElementById('toggleIcon');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('open');
+    }
+
+    // Exchange Rate Functions
+    function showMessage(message, type = 'success') {
+        const successEl = document.getElementById('successMessage');
+        const errorEl = document.getElementById('errorMessage');
+        
+        if (type === 'success') {
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            setTimeout(() => { successEl.style.display = 'none'; }, 5000);
+        } else {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+            setTimeout(() => { errorEl.style.display = 'none'; }, 5000);
+        }
+    }
+
+    async function updateSingleRate(currency) {
+        const rateInput = document.getElementById(`rate-${currency}`);
+        const rate = parseFloat(rateInput.value);
+        
+        if (rate <= 0) {
+            showMessage('Exchange rate must be greater than 0', 'error');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/update-exchange-rate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    currency: currency,
+                    rate: rate
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showMessage(`${currency} rate updated successfully!`, 'success');
+                const updatedEl = document.getElementById(`updated-${currency}`);
+                updatedEl.textContent = `Updated: ${new Date().toLocaleString()}`;
+            } else {
+                showMessage(data.message || 'Failed to update rate', 'error');
+            }
+        } catch (error) {
+            showMessage('Error updating exchange rate', 'error');
+            console.error('Error:', error);
+        }
+    }
+
+    async function updateAllRates() {
+        const rates = {
+            USD: parseFloat(document.getElementById('rate-USD').value),
+            NPR: parseFloat(document.getElementById('rate-NPR').value),
+            AUD: parseFloat(document.getElementById('rate-AUD').value),
+            INR: parseFloat(document.getElementById('rate-INR').value)
+        };
+        
+        for (let currency in rates) {
+            if (rates[currency] <= 0) {
+                showMessage(`Invalid rate for ${currency}. All rates must be greater than 0`, 'error');
+                return;
+            }
+        }
+        
+        try {
+            const response = await fetch('/api/update-all-exchange-rates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rates: rates })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showMessage('All exchange rates updated successfully!', 'success');
+                const now = new Date().toLocaleString();
+                ['USD', 'NPR', 'AUD', 'INR'].forEach(currency => {
+                    const updatedEl = document.getElementById(`updated-${currency}`);
+                    updatedEl.textContent = `Updated: ${now}`;
+                });
+            } else {
+                showMessage(data.message || 'Failed to update rates', 'error');
+            }
+        } catch (error) {
+            showMessage('Error updating exchange rates', 'error');
+            console.error('Error:', error);
+        }
+    }
+
+    // Booking Rules Functions
+    function showRulesMessage(message, type = 'success') {
+        const successEl = document.getElementById('rulesSuccessMessage');
+        const errorEl = document.getElementById('rulesErrorMessage');
+        
+        if (type === 'success') {
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            setTimeout(() => { successEl.style.display = 'none'; }, 5000);
+        } else {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+            setTimeout(() => { errorEl.style.display = 'none'; }, 5000);
+        }
+    }
+
+    async function updateBookingRules() {
+        const maxBookingDays = parseInt(document.getElementById('max-booking-days').value);
+        const maxAdvanceDays = parseInt(document.getElementById('max-advance-days').value);
+        
+        if (maxBookingDays < 1 || maxBookingDays > 365) {
+            showRulesMessage('Maximum booking days must be between 1 and 365', 'error');
+            return;
+        }
+        
+        if (maxAdvanceDays < 1 || maxAdvanceDays > 730) {
+            showRulesMessage('Maximum advance days must be between 1 and 730', 'error');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/update-booking-rules', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    max_booking_days: maxBookingDays,
+                    max_advance_days: maxAdvanceDays
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showRulesMessage('Booking rules updated successfully!', 'success');
+            } else {
+                showRulesMessage(data.message || 'Failed to update booking rules', 'error');
+            }
+        } catch (error) {
+            showRulesMessage('Error updating booking rules', 'error');
+            console.error('Error:', error);
+        }
+    }
+</script>
+
+{% endblock %}

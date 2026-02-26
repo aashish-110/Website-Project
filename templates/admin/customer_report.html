@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Analysis Report{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customer_report.css') }}">
+<script>
+    function filterCustomers() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('customerTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const username = rows[i].getElementsByTagName('td')[1];
+            const email = rows[i].getElementsByTagName('td')[2];
+            
+            if (username && email) {
+                const usernameText = username.textContent || username.innerText;
+                const emailText = email.textContent || email.innerText;
+                
+                if (usernameText.toLowerCase().indexOf(filter) > -1 || 
+                    emailText.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <a href="{{ url_for('admin_dashboard') }}" class="back-button">← Back to Dashboard</a>
+    <button onclick="window.print()" class="print-button">🖨️ Print Report</button>
+    
+    <div class="report-header">
+        <h1>👥 Customer Analysis Report</h1>
+        <p>Complete Customer Spending & Behavior Analysis</p>
+    </div>
+
+    {% if customer_data %}
+        {% set total_customers = customer_data | length %}
+        {% set total_spent = customer_data | sum(attribute='total_spent') %}
+        {% set total_bookings = customer_data | sum(attribute='total_bookings') %}
+        {% set avg_spent_per_customer = (total_spent / total_customers) if total_customers > 0 else 0 %}
+        
+        <div class="summary-stats">
+            <div class="stat-box">
+                <h3>Total Customers</h3>
+                <div class="value">{{ total_customers }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Spent</h3>
+                <div class="value">£{{ "%.2f"|format(total_spent) }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Bookings</h3>
+                <div class="value">{{ total_bookings }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>Avg Spent/Customer</h3>
+                <div class="value">£{{ "%.2f"|format(avg_spent_per_customer) }}</div>
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <label for="searchInput"><strong>🔍 Search Customers:</strong></label>
+            <input type="text" id="searchInput" onkeyup="filterCustomers()" 
+                   placeholder="Search by username or email...">
+        </div>
+
+        <table id="customerTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Total Bookings</th>
+                    <th>Total Spent</th>
+                    <th>Avg Booking Value</th>
+                    <th>First Booking</th>
+                    <th>Last Booking</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customer_data %}
+                <tr>
+                    <td data-label="Rank">
+                        {% if loop.index <= 3 %}
+                            <span class="rank-highlight">🏆 {{ loop.index }}</span>
+                        {% else %}
+                            {{ loop.index }}
+                        {% endif %}
+                    </td>
+                    <td data-label="Username"><strong>{{ customer.username }}</strong></td>
+                    <td data-label="Email">{{ customer.email }}</td>
+                    <td data-label="Total Bookings">{{ customer.total_bookings }}</td>
+                    <td data-label="Total Spent">£{{ "%.2f"|format(customer.total_spent) }}</td>
+                    <td data-label="Avg Booking Value">£{{ "%.2f"|format(customer.avg_booking_value) }}</td>
+                    <td data-label="First Booking">{{ customer.first_booking.strftime('%Y-%m-%d') if customer.first_booking else 'N/A' }}</td>
+                    <td data-label="Last Booking">{{ customer.last_booking.strftime('%Y-%m-%d') if customer.last_booking else 'N/A' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="empty-state">
+            <p>No customer data available yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

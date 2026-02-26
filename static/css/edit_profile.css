@@ -1,0 +1,441 @@
+/* ========================================
+   EDIT PROFILE - MODERN BALANCED DESIGN
+   Trendy with Perfect Balance of Style & Simplicity
+   ======================================== */
+
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+
+/* ========================================
+   CONTAINER WITH MODERN BACKGROUND
+   ======================================== */
+
+.edit-profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 100px;
+    padding: 2.5rem 1rem;
+    min-height: 70vh;
+    position: relative;
+}
+
+/* Modern mesh gradient background */
+.edit-profile-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        linear-gradient(to bottom, #ffffff, #f9fafb);
+    z-index: -2;
+}
+
+/* Floating shapes decoration */
+.edit-profile-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.05) 0%, transparent 30%);
+    z-index: -1;
+    animation: float 15s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, 20px); }
+}
+
+/* ========================================
+   HEADING WITH MODERN STYLE
+   ======================================== */
+
+.edit-profile-container h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 800;
+    color: #111827;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient underline */
+.edit-profile-container h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #f59e0b);
+    margin: 0.75rem auto 0;
+    border-radius: 9999px;
+}
+
+/* ========================================
+   FORM WITH GLASS EFFECT
+   ======================================== */
+
+.edit-profile-container form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   LABELS WITH ICON STYLE
+   ======================================== */
+
+.edit-profile-container label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #374151;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ========================================
+   MODERN TEXT INPUT
+   ======================================== */
+
+.edit-profile-container input[type="text"] {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    color: #111827;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 1.5rem;
+}
+
+.edit-profile-container input[type="text"]:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.edit-profile-container input[type="text"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   MODERN FILE INPUT
+   ======================================== */
+
+.edit-profile-container input[type="file"] {
+    width: 100%;
+    padding: 1rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.875rem;
+    color: #4b5563;
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.edit-profile-container input[type="file"]:hover {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.edit-profile-container input[type="file"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Styled file button */
+.edit-profile-container input[type="file"]::file-selector-button {
+    padding: 0.5rem 1.25rem;
+    margin-right: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-profile-container input[type="file"]::file-selector-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   PROFILE IMAGE WITH MODERN FRAME
+   ======================================== */
+
+.edit-profile-container img {
+    display: block;
+    width: 160px;
+    height: 160px;
+    margin: 2rem auto;
+    object-fit: cover;
+    border-radius: 9999px;
+    border: 5px solid #ffffff;
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 0 0 2px #ffffff,
+        0 0 0 4px rgba(99, 102, 241, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.edit-profile-container img:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+        0 20px 40px -10px rgba(99, 102, 241, 0.3),
+        0 0 0 2px #ffffff,
+        0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* Add wrapper for image gradient effect */
+.edit-profile-container form {
+    position: relative;
+}
+
+/* ========================================
+   MODERN GRADIENT BUTTON
+   ======================================== */
+
+.edit-profile-container button[type="submit"] {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-top: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer effect */
+.edit-profile-container button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.edit-profile-container button[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 20px 40px -10px rgba(99, 102, 241, 0.3);
+}
+
+.edit-profile-container button[type="submit"]:hover::before {
+    left: 100%;
+}
+
+.edit-profile-container button[type="submit"]:active {
+    transform: translateY(-1px);
+}
+
+/* Success state animation (optional) */
+.edit-profile-container button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   HIDE BR TAGS
+   ======================================== */
+
+.edit-profile-container br {
+    display: none;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Large Desktop */
+@media (min-width: 1440px) {
+    .edit-profile-container {
+        max-width: 650px;
+        padding: 3rem 1.5rem;
+    }
+    
+    .edit-profile-container form {
+        padding: 3rem;
+    }
+    
+    .edit-profile-container img {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1023px) {
+    .edit-profile-container {
+        max-width: 580px;
+        padding: 2rem 1rem;
+    }
+    
+    .edit-profile-container form {
+        padding: 2rem;
+    }
+    
+    .edit-profile-container img {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .edit-profile-container {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .edit-profile-container h2 {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .edit-profile-container form {
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+    }
+    
+    .edit-profile-container input[type="text"],
+    .edit-profile-container input[type="file"] {
+        padding: 0.75rem 1rem;
+        font-size: 0.9375rem;
+    }
+    
+    .edit-profile-container img {
+        width: 130px;
+        height: 130px;
+        margin: 1.5rem auto;
+    }
+    
+    .edit-profile-container button[type="submit"] {
+        padding: 1rem;
+        font-size: 0.9375rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .edit-profile-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .edit-profile-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .edit-profile-container form {
+        padding: 1.25rem;
+    }
+    
+    .edit-profile-container img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .edit-profile-container input[type="file"]::file-selector-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+.edit-profile-container *:focus-visible {
+    outline: 3px solid #6366f1;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .edit-profile-container *,
+    .edit-profile-container *::before,
+    .edit-profile-container *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .edit-profile-container form {
+        border: 2px solid #111827;
+    }
+    
+    .edit-profile-container input[type="text"],
+    .edit-profile-container input[type="file"] {
+        border-width: 3px;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .edit-profile-container::before,
+    .edit-profile-container::after {
+        display: none;
+    }
+    
+    .edit-profile-container form {
+        box-shadow: none;
+        border: 1px solid #d1d5db;
+    }
+    
+    .edit-profile-container button[type="submit"] {
+        display: none;
+    }
+}

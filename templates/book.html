@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Book Your Stay | World Hotel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/book.css') }}">
+<script>
+    // Pass booking rules from Flask to JavaScript
+    const BOOKING_RULES = {
+        max_booking_days: {{ max_booking_days|default(30) }},
+        max_advance_days: {{ max_advance_days|default(90) }}
+    };
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="booking-wrapper">
+
+    <div class="head">
+        <p>Book Your Hotel & Stay</p>
+    </div>
+
+    <div class="booking-box">
+        <h2>Check Availability</h2>
+
+        <!-- Form starts here -->
+        <form method="POST" action="{{ url_for('book', city=city) }}" id="bookingForm">
+            <div class="form-row">
+                <div class="field">
+                    <label>Check-in</label>
+                    <input type="date" id="start" name="trip-start" min="{{ today }}" max="{{ max_date }}" required>
+                </div>
+
+                <div class="field">
+                    <label>Check-out</label>
+                    <input type="date" id="end" name="trip-end" min="{{ today }}" max="{{ max_date }}" required>
+                </div>
+
+                <div class="field">
+                    <label>Guests</label>
+                    <select name="guests" id="guests" required>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5 Guests</option>
+                    </select>
+                </div>
+
+                <!-- Hidden input for city -->
+                <input type="hidden" name="location" value="{{ city }}">
+            </div>
+
+            <div class="rules-info">
+                <p><small>📅 You can book up to <strong>{{ max_advance_days }} days</strong> in advance</small></p>
+                <p><small>⏱️ Maximum stay: <strong>{{ max_booking_days }} days</strong> per booking</small></p>
+            </div>
+
+            <button type="submit" class="search-btn">Check Availability</button>
+        </form>
+        <!-- Form ends here -->
+    </div>
+</div>
+
+<script>
+    const startInput = document.getElementById('start');
+    const endInput = document.getElementById('end');
+    const form = document.getElementById('bookingForm');
+
+    // Get today's date (YYYY-MM-DD)
+    const today = new Date().toISOString().split('T')[0];
+
+    // Prevent past check-in dates
+    startInput.min = today;
+
+    startInput.addEventListener('change', () => {
+        if (!startInput.value) return;
+
+        const checkin = new Date(startInput.value);
+        const maxCheckout = new Date(checkin);
+        
+        // Use dynamic max booking days from database
+        maxCheckout.setDate(maxCheckout.getDate() + BOOKING_RULES.max_booking_days);
+
+        endInput.min = startInput.value;
+        endInput.max = maxCheckout.toISOString().split('T')[0];
+
+        // Reset checkout if invalid
+        if (endInput.value < endInput.min || endInput.value > endInput.max) {
+            endInput.value = '';
+        }
+    });
+
+    // Client-side validation for booking duration
+    form.addEventListener('submit', function(event) {
+        if (!startInput.value || !endInput.value) return;
+
+        const checkin = new Date(startInput.value);
+        const checkout = new Date(endInput.value);
+        const duration = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+
+        if (duration > BOOKING_RULES.max_booking_days) {
+            event.preventDefault();
+            alert(`Maximum booking duration is ${BOOKING_RULES.max_booking_days} days. Please adjust your dates.`);
+            return false;
+        }
+
+        // Validate advance booking
+        const today = new Date();
+        const daysInAdvance = Math.ceil((checkin - today) / (1000 * 60 * 60 * 24));
+        
+        if (daysInAdvance > BOOKING_RULES.max_advance_days) {
+            event.preventDefault();
+            alert(`You can only book up to ${BOOKING_RULES.max_advance_days} days in advance.`);
+            return false;
+        }
+
+        return true;
+    });
+</script>
+
+{% endblock %}

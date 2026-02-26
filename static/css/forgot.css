@@ -1,0 +1,257 @@
+/* ================= BASE STYLES ================= */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.login-box {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.4s ease-in-out;
+    transition: all 0.3s ease;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.7rem;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #2a5298;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #2a5298;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+}
+
+.login-btn:hover {
+    background: #1e3c72;
+    transform: translateY(-2px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.error {
+    background: #ffe5e5;
+    color: #b30000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+    border-left: 4px solid #dc3545;
+}
+
+.back-link {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.back-link a {
+    color: #2a5298;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+    color: #1e3c72;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Large tablets */
+@media (max-width: 1024px) {
+    .login-box {
+        max-width: 400px;
+    }
+}
+
+/* Tablets (medium screens) */
+@media (max-width: 768px) {
+    .login-wrapper {
+        padding: 18px;
+    }
+
+    .login-box {
+        max-width: 90%;
+        padding: 30px;
+    }
+
+    .login-box h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 18px;
+    }
+
+    .input-group label {
+        font-size: 13.5px;
+    }
+
+    .input-group input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .login-btn {
+        font-size: 15px;
+        padding: 11px;
+    }
+
+    .back-link a {
+        font-size: 13px;
+    }
+
+    .error {
+        font-size: 13px;
+        padding: 9px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .login-wrapper {
+        padding: 15px;
+    }
+
+    .login-box {
+        padding: 25px;
+        border-radius: 8px;
+    }
+
+    .login-box h2 {
+        font-size: 1.3rem;
+        margin-bottom: 18px;
+    }
+
+    .input-group {
+        margin-bottom: 16px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .input-group input {
+        padding: 9px;
+        font-size: 13px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .back-link {
+        margin-top: 16px;
+    }
+
+    .back-link a {
+        font-size: 12px;
+    }
+
+    .error {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+    .login-box {
+        padding: 20px;
+    }
+
+    .login-box h2 {
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+    }
+
+    .input-group {
+        margin-bottom: 14px;
+    }
+
+    .input-group label {
+        font-size: 12px;
+    }
+
+    .input-group input {
+        padding: 8px;
+        font-size: 12.5px;
+    }
+
+    .login-btn {
+        font-size: 13px;
+        padding: 9px;
+    }
+
+    .back-link a {
+        font-size: 11px;
+    }
+
+    .error {
+        font-size: 11px;
+        padding: 7px;
+    }
+}
